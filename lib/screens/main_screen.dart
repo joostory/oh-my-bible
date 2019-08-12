@@ -4,6 +4,8 @@ import 'package:holybible/actions/actions.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:redux/src/store.dart';
 
+import '../models/version.dart';
+
 class MainScreen extends StatelessWidget {
 
   @override
@@ -11,7 +13,7 @@ class MainScreen extends StatelessWidget {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
-        return vm.isInitialized? VersionList() : Splash();
+        return vm.isInitialized? VersionList(vm.versions) : Splash();
       },
       onInit: (store) => store.dispatch(LoadAppInfoAction()),
     );
@@ -20,30 +22,36 @@ class MainScreen extends StatelessWidget {
 
 class _ViewModel {
   final bool isInitialized;
+  final List<Version> versions;
 
   _ViewModel({
-    this.isInitialized
+    this.isInitialized,
+    this.versions
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      isInitialized: store.state.isInitialized
+      isInitialized: store.state.isInitialized,
+      versions: store.state.versions
     );
   }
 }
 
 class VersionList extends StatelessWidget {
+  final List<Version> versions;
+
+  VersionList(this.versions);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("Loaded")
+        child: Text("Loaded (${versions})")
       )
     );
   }
 
 }
-
 
 class Splash extends StatelessWidget {
   @override

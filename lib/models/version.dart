@@ -8,10 +8,10 @@ class Version {
     this.name
   });
 
-  static fromMap(Map<String, String> item) {
+  static fromMap(Map<String, dynamic> item) {
     return new Version(
-      vcode: item['vcode'],
-      name: item['name']
+      vcode: item['vcode'].toString(),
+      name: item['name'].toString()
     );
   }
 }
