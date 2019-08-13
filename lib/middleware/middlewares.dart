@@ -21,7 +21,6 @@ List<Middleware<AppState>> createMiddleware() {
 
 void _log(Store<AppState> store, action, NextDispatcher next) {
   print('[Action] ${new DateTime.now()}: $action');
-
   next(action);
 }
 

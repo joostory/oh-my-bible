@@ -25,7 +25,6 @@ class _ChapterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('${bible.name} ${bible.vcode} ${bible.bcode} ${bible.chapterCount}');
     return Scaffold(
         body: ListView.builder(
             itemCount: bible.chapterCount,
