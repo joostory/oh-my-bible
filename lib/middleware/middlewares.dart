@@ -1,4 +1,6 @@
 import 'package:holybible/actions/actions.dart';
+import 'package:holybible/models/bible.dart';
+import 'package:holybible/models/verse.dart';
 import 'package:holybible/repository/bible_repository.dart';
 import 'package:redux/redux.dart';
 import 'package:holybible/reducers/app_state.dart';
@@ -11,7 +13,9 @@ List<Middleware<AppState>> createMiddleware() {
 
   return [
     TypedMiddleware<AppState, dynamic>(_log),
-    TypedMiddleware<AppState, LoadAppInfoAction>(createLoadAppInfo(repository))
+    TypedMiddleware<AppState, LoadAppInfoAction>(createLoadAppInfo(repository)),
+    TypedMiddleware<AppState, LoadBibleListAction>(loadBibleList(repository)),
+    TypedMiddleware<AppState, LoadVerseListAction>(loadVerseList(repository))
   ];
 }
 
@@ -30,6 +34,26 @@ Middleware<AppState> createLoadAppInfo(BibleRepository repository) {
   };
 }
 
+
+Middleware<AppState> loadBibleList(BibleRepository repository) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    List<Bible> bibles = await repository.loadBibles(action.version.vcode);
+    store.dispatch(ReceiveBiblesAction(bibles));
+    next(action);
+  };
+}
+
+Middleware<AppState> loadVerseList(BibleRepository repository) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    List<Verse> verses = await repository.loadVerses(
+      action.bible.vcode,
+      action.bible.bcode,
+      action.cnum
+    );
+    store.dispatch(ReceiveVersesAction(verses));
+    next(action);
+  };
+}
 
 Future loadAppInfo(Store<AppState> store, action, NextDispatcher next) async {
 
