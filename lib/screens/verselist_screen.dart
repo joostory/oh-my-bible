@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/actions/actions.dart';
+import 'package:holybible/components/list.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
 import 'package:holybible/reducers/app_state.dart';
@@ -16,7 +17,7 @@ class VerseListScreen extends StatelessWidget {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
-        return _VerseList(vm.verses);
+        return _VerseList(args.bible, args.cnum, vm.verses);
       },
       onInit: (store) => store.dispatch(LoadVerseListAction(
           args.bible, args.cnum
@@ -44,19 +45,34 @@ class _ViewModel {
 
 
 class _VerseList extends StatelessWidget {
+  final Bible bible;
+  final int cnum;
   final List<Verse> verses;
 
-  _VerseList(this.verses);
+  _VerseList(this.bible, this.cnum, this.verses);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: verses.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text('${index + 1} ${verses[index].content}'),
-        )
-      ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          TextAppBar('${bible.name} $cnum'),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => Container(
+                child: Text('${index + 1} ${verses[index].content}'),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.0
+                ),
+                margin: EdgeInsets.symmetric(
+                  vertical: 5.0,
+                ),
+              ),
+              childCount: verses.length
+            ),
+          )
+        ],
+      )
     );
   }
 }

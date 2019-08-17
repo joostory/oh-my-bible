@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/actions/actions.dart';
+import 'package:holybible/components/list.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:redux/src/store.dart';
 
@@ -47,18 +48,26 @@ class _VersionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: versions.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(versions[index].name),
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              BibleListScreen.routeName,
-              arguments: BibleListScreenArguments(versions[index])
-            );
-          },
-        )
+      body: CustomScrollView(
+        slivers: <Widget>[
+          TextAppBar('성경'),
+          SliverFixedExtentList(
+            itemExtent: 50.0,
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => ListTile(
+                title: Text(versions[index].name),
+                onTap: () {
+                  Navigator.pushNamed(
+                      context,
+                      BibleListScreen.routeName,
+                      arguments: BibleListScreenArguments(versions[index])
+                  );
+                },
+              ),
+              childCount: versions.length,
+            ),
+          )
+        ],
       )
     );
   }
