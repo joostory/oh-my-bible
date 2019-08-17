@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class TextAppBar extends StatelessWidget {
+class ExpandAppBar extends StatelessWidget {
   final String _title;
 
-  TextAppBar(this._title);
+  ExpandAppBar(this._title);
 
   @override
   Widget build(BuildContext context) {

@@ -50,7 +50,7 @@ class _VersionList extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          TextAppBar('성경'),
+          ExpandAppBar('성경'),
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(

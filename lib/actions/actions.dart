@@ -10,12 +10,6 @@ class LoadBibleListAction {
   LoadBibleListAction(this.version);
 }
 
-class LoadVerseListAction {
-  Bible bible;
-  int cnum;
-  LoadVerseListAction(this.bible, this.cnum);
-}
-
 class ReceiveVersionsAction {
   List<Version> versions;
   ReceiveVersionsAction(this.versions);

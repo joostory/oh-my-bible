@@ -56,7 +56,7 @@ class _BibleList extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          TextAppBar(version.name),
+          ExpandAppBar(version.name),
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(

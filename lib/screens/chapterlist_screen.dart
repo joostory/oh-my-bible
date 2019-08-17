@@ -29,7 +29,7 @@ class _ChapterList extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          TextAppBar(bible.name),
+          ExpandAppBar(bible.name),
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(
