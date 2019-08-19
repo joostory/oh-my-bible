@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:holybible/components/list.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
 import 'package:holybible/repository/bible_repository.dart';
@@ -50,6 +49,9 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
         backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
       ),
       body: PageView.builder(
+        controller: PageController(
+            initialPage: selectedChapter - 1
+        ),
         itemBuilder: (context, index) => _VerseList(
           bible :bible,
           cnum: index + 1
