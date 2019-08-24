@@ -1,16 +1,15 @@
 
-import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/version.dart';
 
 class AppState {
-  final bool isInitialized;
+  final bool initialized;
   final List<Version> versions;
-  final List<Bible> bibles;
+  final String selectedVersionCode;
 
   AppState({
-    this.isInitialized = false,
+    this.initialized = false,
     this.versions = const [],
-    this.bibles = const [],
+    this.selectedVersionCode = ''
   });
 
   factory AppState.newInstance() => AppState();

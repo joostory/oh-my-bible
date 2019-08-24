@@ -6,21 +6,11 @@ import 'package:holybible/models/version.dart';
 class LoadAppInfoAction {}
 
 class LoadBibleListAction {
-  Version version;
+  final Version version;
   LoadBibleListAction(this.version);
 }
 
 class ReceiveVersionsAction {
-  List<Version> versions;
+  final List<Version> versions;
   ReceiveVersionsAction(this.versions);
-}
-
-class ReceiveBiblesAction {
-  List<Bible> bibles;
-  ReceiveBiblesAction(this.bibles);
-}
-
-class ReceiveVersesAction {
-  List<Verse> verses;
-  ReceiveVersesAction(this.verses);
 }

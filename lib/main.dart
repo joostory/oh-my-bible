@@ -6,7 +6,7 @@ import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/screens/biblelist_screen.dart';
 import 'package:holybible/screens/chapterlist_screen.dart';
 import 'package:holybible/screens/verselist_screen.dart';
-import 'package:holybible/screens/versionlist_screen.dart';
+import 'package:holybible/screens/main_screen.dart';
 import 'package:redux/redux.dart';
 
 void main() => runApp(HolyBibleApp());
@@ -28,7 +28,7 @@ class HolyBibleApp extends StatelessWidget {
         theme: ThemeData.light(),
         initialRoute: '/',
         routes: {
-          VersionListScreen.routeName: (context) => VersionListScreen(),
+          MainScreen.routeName: (context) => MainScreen(),
           BibleListScreen.routeName: (context) => BibleListScreen(),
           ChapterListScreen.routeName: (context) => ChapterListScreen(),
           VerseListScreen.routeName: (context) => VerseListScreen(),
