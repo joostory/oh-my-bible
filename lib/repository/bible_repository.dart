@@ -56,6 +56,18 @@ class BibleRepository {
     return bibles;
   }
 
+  loadBible(vcode, bcode) async {
+    var db = await _getDb();
+    var results = await db.query(
+        'bibles',
+        columns: ['vcode', 'bcode', 'type', 'name', 'chapter_count'],
+        where: 'vcode=:vcode and bcode=:bcode',
+        whereArgs: [vcode, bcode]
+    );
+
+    return Bible.fromMap(results[0]);
+  }
+
   loadVerses(vcode, bcode, cnum) async {
     var db = await _getDb();
     var results = await db.query(
@@ -69,4 +81,6 @@ class BibleRepository {
     results.forEach((item) => verses.add(Verse.fromMap(item)));
     return verses;
   }
+
+
 }

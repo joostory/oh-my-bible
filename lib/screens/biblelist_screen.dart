@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/components/list.dart';
@@ -27,7 +26,6 @@ class BibleListScreen extends StatelessWidget {
 
 class _ViewModel {
   final selectedVersion;
-
   _ViewModel(this.selectedVersion);
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -45,15 +43,13 @@ class _BibleListWidget extends StatefulWidget {
   _BibleListWidget(this.version);
 
   @override
-  State<StatefulWidget> createState() => _BibleListWidgetState(version);
-
+  State<StatefulWidget> createState() => _BibleListWidgetState();
 }
 
 class _BibleListWidgetState extends State<_BibleListWidget> {
-  final Version version;
   List<Bible> bibles = [];
 
-  _BibleListWidgetState(this.version);
+  _BibleListWidgetState();
 
   @override
   initState() {
@@ -61,14 +57,20 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
     loadBibles();
   }
 
-  loadBibles() async {
-    if (version != null) {
-      var repository = BibleRepository();
-      var loadedBibles = await repository.loadBibles(version.vcode);
-      setState(() {
-        bibles = loadedBibles;
-      });
+  @override
+  didUpdateWidget(_BibleListWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.version.vcode != oldWidget.version.vcode) {
+      loadBibles();
     }
+  }
+
+  loadBibles() async {
+    var repository = BibleRepository();
+    var loadedBibles = await repository.loadBibles(widget.version.vcode);
+    setState(() {
+      bibles = loadedBibles;
+    });
   }
 
   @override
@@ -76,17 +78,20 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          ExpandAppBar(version.name),
+          ExpandAppBar(widget.version.name),
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(
               (context, index) => ListTile(
                 title: Text(bibles[index].name),
                 onTap: () {
+                  Bible bible = bibles[index];
                   Navigator.pushNamed(
-                      context,
-                      ChapterListScreen.routeName,
-                      arguments: ChapterListScreenArguments(bibles[index])
+                    context,
+                    ChapterListScreen.routeName,
+                    arguments: ChapterListScreenArguments(
+                      bible.bcode
+                    )
                   );
                 },
               ),

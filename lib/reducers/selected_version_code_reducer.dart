@@ -5,6 +5,7 @@ import '../models/version.dart';
 
 final selectedVersionCodeReducer = combineReducers<String>([
   TypedReducer<String, ReceiveVersionsAction>(_setLoaded),
+  TypedReducer<String, ChangeSelectedVersionAction>(_setSelectedVcode),
 ]);
 
 String _setLoaded(String state, ReceiveVersionsAction action) {
@@ -18,4 +19,8 @@ String _setLoaded(String state, ReceiveVersionsAction action) {
   } else {
     return versions[0].vcode;
   }
+}
+
+String _setSelectedVcode(String selectedVcode, ChangeSelectedVersionAction action) {
+  return action.version.vcode;
 }

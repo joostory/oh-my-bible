@@ -1,6 +1,4 @@
 
-import 'package:holybible/models/bible.dart';
-import 'package:holybible/models/verse.dart';
 import 'package:holybible/models/version.dart';
 
 class LoadAppInfoAction {}
@@ -13,4 +11,9 @@ class LoadBibleListAction {
 class ReceiveVersionsAction {
   final List<Version> versions;
   ReceiveVersionsAction(this.versions);
+}
+
+class ChangeSelectedVersionAction {
+  final Version version;
+  ChangeSelectedVersionAction(this.version);
 }

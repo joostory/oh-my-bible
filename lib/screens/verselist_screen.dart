@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:holybible/components/list.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
+import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
+import 'package:redux/redux.dart';
 
 class VerseListScreen extends StatelessWidget {
   static String routeName = '/verse';
@@ -9,44 +13,89 @@ class VerseListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     VerseListScreenArguments args = ModalRoute.of(context).settings.arguments;
-    return new _VerseListWidget(
-      bible: args.bible,
-      selectedChapter: args.cnum,
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: _ViewModel.fromStore,
+      builder: (BuildContext context, _ViewModel vm) {
+        return _VerseListWidget(
+          vcode: vm.selectedVersion,
+          bcode: args.bcode,
+          selectedChapter: args.cnum,
+        );
+      },
     );
   }
 }
 
+class _ViewModel {
+  final String selectedVersion;
+  _ViewModel(this.selectedVersion);
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel(store.state.selectedVersionCode);
+  }
+}
+
 class _VerseListWidget extends StatefulWidget {
-  final Bible bible;
+  final String vcode;
+  final int bcode;
   final int selectedChapter;
 
   _VerseListWidget({
-    this.bible,
+    this.vcode,
+    this.bcode,
     this.selectedChapter
   });
 
   @override
-  State<StatefulWidget> createState() => new _VerseListWidgetState(
-    bible: bible,
-    selectedChapter: selectedChapter
-  );
+  State<StatefulWidget> createState() => new _VerseListWidgetState(selectedChapter);
 }
 
 class _VerseListWidgetState extends State<_VerseListWidget> {
   Bible bible;
   int selectedChapter;
 
-  _VerseListWidgetState({
-    this.bible,
-    this.selectedChapter
-  });
+  _VerseListWidgetState(this.selectedChapter);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBible();
+  }
+
+  @override
+  didUpdateWidget(_VerseListWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.vcode != oldWidget.vcode || widget.bcode != oldWidget.bcode) {
+      _loadBible();
+    }
+  }
+
+  _loadBible() async {
+    var repository = BibleRepository();
+    var loadBible = await repository.loadBible(widget.vcode, widget.bcode);
+    setState(() {
+      bible = loadBible;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    if (bible == null) {
+      return Scaffold(
+          body: Center(
+            child: Text("Loading..."),
+          )
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${bible.name} $selectedChapter'),
         backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
+        actions: <Widget>[
+          AppBarPopupMenu()
+        ],
       ),
       body: PageView.builder(
         controller: PageController(
@@ -64,9 +113,12 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
 }
 
 class VerseListScreenArguments {
-  Bible bible;
+  int bcode;
   int cnum;
-  VerseListScreenArguments(this.bible, this.cnum);
+  VerseListScreenArguments({
+    this.bcode,
+    this.cnum
+  });
 }
 
 class _VerseList extends StatefulWidget {
@@ -79,32 +131,33 @@ class _VerseList extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _VerseListState(
-    bible: bible,
-    cnum: cnum
-  );
+  State<StatefulWidget> createState() => _VerseListState();
 }
 
 class _VerseListState extends State<_VerseList> {
-  final Bible bible;
-  final int cnum;
   List<Verse> verses = [];
-
-  _VerseListState({
-    this.bible,
-    this.cnum
-  });
-
 
   @override
   initState() {
     super.initState();
-    loadVerses();
+    _loadVerses();
   }
 
-  loadVerses() async {
+  @override
+  didUpdateWidget(_VerseList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.bible.vcode != oldWidget.bible.vcode || widget.bible.bcode != oldWidget.bible.bcode) {
+      _loadVerses();
+    }
+  }
+
+  _loadVerses() async {
     var repository = new BibleRepository();
-    var loadedVerses = await repository.loadVerses(bible.vcode, bible.bcode, cnum);
+    var loadedVerses = await repository.loadVerses(
+      widget.bible.vcode,
+      widget.bible.bcode,
+      widget.cnum
+    );
     setState(() {
       verses = loadedVerses;
     });
