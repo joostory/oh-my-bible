@@ -13,7 +13,17 @@ class ReceiveVersionsAction {
   ReceiveVersionsAction(this.versions);
 }
 
+class ReceiveFontSizeAction {
+  final double fontSize;
+  ReceiveFontSizeAction(this.fontSize);
+}
+
 class ChangeSelectedVersionAction {
   final Version version;
   ChangeSelectedVersionAction(this.version);
+}
+
+class ChangeFontSizeAction {
+  final double fontSize;
+  ChangeFontSizeAction(this.fontSize);
 }

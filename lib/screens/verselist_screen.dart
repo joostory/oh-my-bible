@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:holybible/actions/actions.dart';
 import 'package:holybible/components/list.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
@@ -24,6 +25,15 @@ class VerseListScreen extends StatelessWidget {
       },
     );
   }
+}
+
+class VerseListScreenArguments {
+  int bcode;
+  int cnum;
+  VerseListScreenArguments({
+    this.bcode,
+    this.cnum
+  });
 }
 
 class _ViewModel {
@@ -99,7 +109,7 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
       ),
       body: PageView.builder(
         controller: PageController(
-            initialPage: selectedChapter - 1
+          initialPage: selectedChapter - 1
         ),
         itemBuilder: (context, index) => _VerseList(
           bible :bible,
@@ -107,19 +117,37 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
         ),
         itemCount: bible.chapterCount,
         onPageChanged: (index) => setState(() => selectedChapter = index + 1),
-      )
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              _fontSizeButton('작게', 14.0),
+              _fontSizeButton('보통', 16.0),
+              _fontSizeButton('크게', 20.0),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _fontSizeButton(label, size) {
+    return MaterialButton(
+      child: Text(
+        label
+      ),
+      onPressed: () {
+        print('pressed ${size}');
+        var store = StoreProvider.of<AppState>(context);
+        store.dispatch(ChangeFontSizeAction(size));
+      },
     );
   }
 }
 
-class VerseListScreenArguments {
-  int bcode;
-  int cnum;
-  VerseListScreenArguments({
-    this.bcode,
-    this.cnum
-  });
-}
+
 
 class _VerseList extends StatefulWidget {
   final Bible bible;
@@ -171,18 +199,39 @@ class _VerseListState extends State<_VerseList> {
       );
     }
 
-    return ListView.builder(
-      itemBuilder: (context, index) => Container(
-        child: Text('${index + 1} ${verses[index].content}'),
-        padding: EdgeInsets.symmetric(
-            horizontal: 10.0
-        ),
-        margin: EdgeInsets.symmetric(
-          vertical: 5.0,
-        ),
-      ),
-      itemCount: verses.length,
+    return new StoreConnector<AppState, _VerseListViewModel>(
+      converter: _VerseListViewModel.fromStore,
+      builder: (BuildContext context, _VerseListViewModel vm) {
+        return ListView.builder(
+          padding: EdgeInsets.only(
+              top: 15.0,
+              bottom: 15.0
+          ),
+          itemBuilder: (context, index) => Container(
+            child: Text(
+              '${index + 1} ${verses[index].content}',
+              style: TextStyle(
+                fontSize: vm.fontSize
+              ),
+            ),
+            padding: EdgeInsets.symmetric(
+                horizontal: 15.0,
+                vertical: 5.0
+            ),
+          ),
+          itemCount: verses.length,
+        );
+      },
     );
+
   }
 }
 
+class _VerseListViewModel {
+  final double fontSize;
+  _VerseListViewModel(this.fontSize);
+
+  static _VerseListViewModel fromStore(Store<AppState> store) {
+    return _VerseListViewModel(store.state.fontSize);
+  }
+}
