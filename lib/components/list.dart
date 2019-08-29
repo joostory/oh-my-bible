@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/actions/actions.dart';
 import 'package:holybible/models/version.dart';
 import 'package:holybible/reducers/app_state.dart';
+import 'package:holybible/screens/searchlist_screen.dart';
 import 'package:redux/redux.dart';
 
 class ExpandAppBar extends StatelessWidget {
@@ -28,6 +29,15 @@ class ExpandAppBar extends StatelessWidget {
       titleSpacing: 1.0,
       backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
       actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              SearchListScreen.routeName,
+            );
+          },
+        ),
         AppBarPopupMenu()
       ],
     );

@@ -5,6 +5,7 @@ import 'package:holybible/reducers/app_reducer.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/screens/biblelist_screen.dart';
 import 'package:holybible/screens/chapterlist_screen.dart';
+import 'package:holybible/screens/searchlist_screen.dart';
 import 'package:holybible/screens/verselist_screen.dart';
 import 'package:holybible/screens/main_screen.dart';
 import 'package:redux/redux.dart';
@@ -32,6 +33,7 @@ class HolyBibleApp extends StatelessWidget {
           BibleListScreen.routeName: (context) => BibleListScreen(),
           ChapterListScreen.routeName: (context) => ChapterListScreen(),
           VerseListScreen.routeName: (context) => VerseListScreen(),
+          SearchListScreen.routeName: (context) => SearchListScreen(),
         }
       )
     );

@@ -6,6 +6,7 @@ import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
+import 'package:holybible/screens/searchlist_screen.dart';
 import 'package:redux/redux.dart';
 
 class VerseListScreen extends StatelessWidget {
@@ -104,6 +105,15 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
         title: Text('${bible.name} $selectedChapter'),
         backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                SearchListScreen.routeName,
+              );
+            },
+          ),
           AppBarPopupMenu()
         ],
       ),
@@ -139,7 +149,7 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
         label
       ),
       onPressed: () {
-        print('pressed ${size}');
+        print('pressed $size');
         var store = StoreProvider.of<AppState>(context);
         store.dispatch(ChangeFontSizeAction(size));
       },
@@ -204,8 +214,8 @@ class _VerseListState extends State<_VerseList> {
       builder: (BuildContext context, _VerseListViewModel vm) {
         return ListView.builder(
           padding: EdgeInsets.only(
-              top: 15.0,
-              bottom: 15.0
+            top: 15.0,
+            bottom: 15.0
           ),
           itemBuilder: (context, index) => Container(
             child: Text(
@@ -215,8 +225,8 @@ class _VerseListState extends State<_VerseList> {
               ),
             ),
             padding: EdgeInsets.symmetric(
-                horizontal: 15.0,
-                vertical: 5.0
+              horizontal: 15.0,
+              vertical: 5.0
             ),
           ),
           itemCount: verses.length,

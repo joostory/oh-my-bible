@@ -72,13 +72,24 @@ class BibleRepository {
     var db = await _getDb();
     var results = await db.query(
       'verses',
-      columns: [],
+      columns: ['vcode', 'bcode', 'cnum', 'vnum', 'content'],
       where: 'vcode=:vcode and bcode=:bcode and cnum=:cnum',
       whereArgs: [vcode, bcode, cnum],
       orderBy: 'vnum asc'
     );
     List<Verse> verses = List<Verse>();
     results.forEach((item) => verses.add(Verse.fromMap(item)));
+    return verses;
+  }
+
+  searchVerses(String vcode, String keyword) async {
+    var db = await _getDb();
+    var results = await db.rawQuery(
+      'select verses.*, bibles.name bibleName from verses inner join bibles on verses.bcode = bibles.bcode and bibles.vcode=? where verses.vcode=? and content like ? order by bcode, cnum asc',
+      [vcode, vcode, '%$keyword%']
+    );
+    List<SearchVerse> verses = List<SearchVerse>();
+    results.forEach((item) => verses.add(SearchVerse.fromMap(item)));
     return verses;
   }
 
