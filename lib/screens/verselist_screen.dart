@@ -22,6 +22,7 @@ class VerseListScreen extends StatelessWidget {
           vcode: vm.selectedVersion,
           bcode: args.bcode,
           selectedChapter: args.cnum,
+          fontSize: vm.fontSize
         );
       },
     );
@@ -39,10 +40,11 @@ class VerseListScreenArguments {
 
 class _ViewModel {
   final String selectedVersion;
-  _ViewModel(this.selectedVersion);
+  final double fontSize;
+  _ViewModel(this.selectedVersion, this.fontSize);
 
   static _ViewModel fromStore(Store<AppState> store) {
-    return _ViewModel(store.state.selectedVersionCode);
+    return _ViewModel(store.state.selectedVersionCode, store.state.fontSize);
   }
 }
 
@@ -50,11 +52,13 @@ class _VerseListWidget extends StatefulWidget {
   final String vcode;
   final int bcode;
   final int selectedChapter;
+  final double fontSize;
 
   _VerseListWidget({
     this.vcode,
     this.bcode,
-    this.selectedChapter
+    this.selectedChapter,
+    this.fontSize
   });
 
   @override
@@ -123,7 +127,7 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
         ),
         itemBuilder: (context, index) => _VerseList(
           bible :bible,
-          cnum: index + 1
+          cnum: index + 1,
         ),
         itemCount: bible.chapterCount,
         onPageChanged: (index) => setState(() => selectedChapter = index + 1),
@@ -133,9 +137,9 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              _fontSizeButton('작게', 14.0),
+              _fontSizeButton('작게', widget.fontSize - 2.0),
               _fontSizeButton('보통', 16.0),
-              _fontSizeButton('크게', 20.0),
+              _fontSizeButton('크게', widget.fontSize + 2.0),
             ],
           ),
         ),
@@ -149,7 +153,6 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
         label
       ),
       onPressed: () {
-        print('pressed $size');
         var store = StoreProvider.of<AppState>(context);
         store.dispatch(ChangeFontSizeAction(size));
       },
@@ -218,10 +221,17 @@ class _VerseListState extends State<_VerseList> {
             bottom: 15.0
           ),
           itemBuilder: (context, index) => Container(
-            child: Text(
-              '${index + 1} ${verses[index].content}',
-              style: TextStyle(
-                fontSize: vm.fontSize
+            child: Text.rich(
+              TextSpan(
+                style: TextStyle(
+                  fontSize: vm.fontSize,
+                ),
+                children: [
+                  TextSpan(text:'${index + 1}  ', style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  )),
+                  TextSpan(text:verses[index].content)
+                ]
               ),
             ),
             padding: EdgeInsets.symmetric(

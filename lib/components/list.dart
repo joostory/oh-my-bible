@@ -22,11 +22,6 @@ class ExpandAppBar extends StatelessWidget {
         title: Text(_title),
         centerTitle: true
       ),
-      leading: Container(
-        padding: EdgeInsets.all(10.0),
-        child: Image.asset('assets/icon/ico_holybible.png'),
-      ),
-      titleSpacing: 1.0,
       backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
       actions: <Widget>[
         IconButton(
