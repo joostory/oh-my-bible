@@ -17,7 +17,10 @@ class BibleListScreen extends StatelessWidget {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
-        return _BibleListWidget(vm.selectedVersion);
+        return _BibleListWidget(
+          vm.selectedVersion,
+          vm.fontSize
+        );
       },
     );
   }
@@ -25,22 +28,25 @@ class BibleListScreen extends StatelessWidget {
 
 
 class _ViewModel {
-  final selectedVersion;
-  _ViewModel(this.selectedVersion);
+  final Version selectedVersion;
+  final double fontSize;
+  _ViewModel({this.selectedVersion, this.fontSize});
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      store.state.versions.firstWhere(
+      selectedVersion: store.state.versions.firstWhere(
         (version) => version.vcode == store.state.selectedVersionCode
-      )
+      ),
+      fontSize: store.state.fontSize
     );
   }
 }
 
 class _BibleListWidget extends StatefulWidget {
   final Version version;
+  final double fontSize;
 
-  _BibleListWidget(this.version);
+  _BibleListWidget(this.version, this.fontSize);
 
   @override
   State<StatefulWidget> createState() => _BibleListWidgetState();
@@ -78,12 +84,17 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          ExpandAppBar(widget.version.name),
+          ExpandedAppBar(widget.version.name),
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(
               (context, index) => ListTile(
-                title: Text(bibles[index].name),
+                title: Text(
+                  bibles[index].name,
+                  style: TextStyle(
+                    fontSize: widget.fontSize
+                  ),
+                ),
                 onTap: () {
                   Bible bible = bibles[index];
                   Navigator.pushNamed(

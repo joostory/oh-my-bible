@@ -18,8 +18,9 @@ class ChapterListScreen extends StatelessWidget {
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
         return _ChapterList(
-          vcode: vm.selectedVersion,
-          bcode: args.bcode
+          vcode: vm.selectedVersionCode,
+          bcode: args.bcode,
+          fontSize: vm.fontSize
         );
       },
     );
@@ -32,21 +33,30 @@ class ChapterListScreenArguments {
 }
 
 class _ViewModel {
-  final String selectedVersion;
-  _ViewModel(this.selectedVersion);
+  final String selectedVersionCode;
+  final double fontSize;
+  _ViewModel({
+    this.selectedVersionCode,
+    this.fontSize
+  });
 
   static _ViewModel fromStore(Store<AppState> store) {
-    return _ViewModel(store.state.selectedVersionCode);
+    return _ViewModel(
+      selectedVersionCode: store.state.selectedVersionCode,
+      fontSize: store.state.fontSize
+    );
   }
 }
 
 class _ChapterList extends StatefulWidget {
   final String vcode;
   final int bcode;
+  final double fontSize;
 
   _ChapterList({
     this.vcode,
-    this.bcode
+    this.bcode,
+    this.fontSize
   });
 
   @override
@@ -94,12 +104,17 @@ class _ChapterListState extends State<_ChapterList> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          ExpandAppBar(bible.name),
+          ExpandedAppBar(bible.name),
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(
               (context, index) => ListTile(
-                title: Text('${bible.name} ${index + 1}'),
+                title: Text(
+                  '${bible.name} ${index + 1}',
+                  style: TextStyle(
+                    fontSize: widget.fontSize
+                  )
+                ),
                 onTap: () {
                   Navigator.pushNamed(
                     context,

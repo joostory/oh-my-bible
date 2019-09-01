@@ -6,10 +6,10 @@ import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/screens/searchlist_screen.dart';
 import 'package:redux/redux.dart';
 
-class ExpandAppBar extends StatelessWidget {
+class ExpandedAppBar extends StatelessWidget {
   final String _title;
 
-  ExpandAppBar(this._title);
+  ExpandedAppBar(this._title);
 
   @override
   Widget build(BuildContext context) {
@@ -23,65 +23,122 @@ class ExpandAppBar extends StatelessWidget {
         centerTitle: true
       ),
       backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              SearchListScreen.routeName,
-            );
-          },
-        ),
-        AppBarPopupMenu()
-      ],
+      actions: createAppBarActions(context),
     );
   }
 }
 
-class AppBarPopupMenu extends StatelessWidget {
+List<Widget> createAppBarActions(context) => [
+  IconButton(
+    icon: Icon(Icons.search),
+    onPressed: () {
+      Navigator.pushNamed(
+        context,
+        SearchListScreen.routeName,
+      );
+    },
+  ),
+  IconButton(
+    icon: Icon(Icons.tune),
+    onPressed: () {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: Text('설정'),
+              elevation: 4.0,
+              children: [
+                AppBarPopupSettings()
+              ],
+            );
+          }
+      );
+    },
+  )
+];
+
+
+class AppBarPopupSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
-        return _AppBarPopupMenuWidget(vm.versions);
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+          child: Column(
+            children: <Widget>[
+              _VersionsSetting(vm.versions, vm.selectedVersionCode),
+              _FontSizeSetting(vm.fontSize)
+            ],
+          ),
+        );
       },
     );
   }
 }
 
-
 class _ViewModel {
-  List<Version> versions = [];
-  _ViewModel({this.versions});
+  final List<Version> versions;
+  final String selectedVersionCode;
+  final double fontSize;
+  _ViewModel({
+    this.versions,
+    this.selectedVersionCode,
+    this.fontSize
+  });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-        versions: store.state.versions
+        versions: store.state.versions,
+        selectedVersionCode: store.state.selectedVersionCode,
+        fontSize: store.state.fontSize
     );
   }
 }
 
 
-class _AppBarPopupMenuWidget extends StatelessWidget {
+class _VersionsSetting extends StatelessWidget {
   final List<Version> versions;
-  _AppBarPopupMenuWidget(this.versions);
+  final String selectedVersionCode;
+  _VersionsSetting(this.versions, this.selectedVersionCode);
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<Version>(
-      onSelected: (version) {
+    return DropdownButton(
+      isExpanded: true,
+      value: versions.firstWhere((version) => version.vcode == selectedVersionCode),
+      items: versions.map((version) => DropdownMenuItem(
+        child: Text(version.name),
+        value: version,
+      )).toList(),
+      onChanged: (Version version) {
         var store = StoreProvider.of<AppState>(context);
         store.dispatch(ChangeSelectedVersionAction(version));
       },
-      itemBuilder: (context) {
-        return versions.map((version) =>
-          PopupMenuItem(
-            child: Text(version.name),
-            value: version,
-          )
-        ).toList();
+    );
+  }
+}
+
+class _FontSizeSetting extends StatelessWidget {
+  final List<double> fontSizeList = [14.0, 16.0, 24.0];
+  final double fontSize;
+  _FontSizeSetting(this.fontSize);
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<double>(
+      isExpanded: true,
+      value: fontSize,
+      items: [
+        DropdownMenuItem<double>(child: Text('텍스트 작게'), value: 14.0),
+        DropdownMenuItem<double>(child: Text('텍스트 기본 크기'), value: 16.0),
+        DropdownMenuItem<double>(child: Text('텍스트 크게'), value: 20.0),
+        DropdownMenuItem<double>(child: Text('텍스트 아주 크게'), value: 24.0),
+      ],
+      onChanged: (double selectedFontSize) {
+        var store = StoreProvider.of<AppState>(context);
+        store.dispatch(ChangeFontSizeAction(selectedFontSize));
       },
     );
   }
