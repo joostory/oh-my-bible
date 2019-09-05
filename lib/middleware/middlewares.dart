@@ -14,6 +14,7 @@ List<Middleware<AppState>> createMiddleware() {
     TypedMiddleware<AppState, dynamic>(_log),
     TypedMiddleware<AppState, LoadAppInfoAction>(_createLoadAppInfo(repository)),
     TypedMiddleware<AppState, ChangeFontSizeAction>(_saveFontSize()),
+    TypedMiddleware<AppState, ChangeDarkModeAction>(_saveUseDarkMode()),
   ];
 }
 
@@ -29,7 +30,12 @@ Middleware<AppState> _createLoadAppInfo(BibleRepository repository) {
     store.dispatch(ReceiveVersionsAction(versions));
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    store.dispatch(ReceiveFontSizeAction(prefs.getDouble('fontSize')));
+    if (prefs.containsKey('fontSize')) {
+      store.dispatch(ChangeFontSizeAction(prefs.getDouble('fontSize')));
+    }
+    if (prefs.containsKey('useDarkMode')) {
+      store.dispatch(ChangeDarkModeAction(prefs.getBool('useDarkMode')));
+    }
     next(action);
   };
 }
@@ -38,6 +44,14 @@ Middleware<AppState> _saveFontSize() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setDouble('fontSize', action.fontSize);
+    next(action);
+  };
+}
+
+Middleware<AppState> _saveUseDarkMode() {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('useDarkMode', action.useDarkMode);
     next(action);
   };
 }

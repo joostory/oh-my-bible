@@ -22,7 +22,6 @@ class ExpandedAppBar extends StatelessWidget {
         title: Text(_title),
         centerTitle: true
       ),
-      backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
       actions: createAppBarActions(context),
     );
   }
@@ -69,7 +68,8 @@ class AppBarPopupSettings extends StatelessWidget {
           child: Column(
             children: <Widget>[
               _VersionsSetting(vm.versions, vm.selectedVersionCode),
-              _FontSizeSetting(vm.fontSize)
+              _FontSizeSetting(vm.fontSize),
+              _ThemeSetting(vm.useDarkMode)
             ],
           ),
         );
@@ -82,17 +82,20 @@ class _ViewModel {
   final List<Version> versions;
   final String selectedVersionCode;
   final double fontSize;
+  final bool useDarkMode;
   _ViewModel({
     this.versions,
     this.selectedVersionCode,
-    this.fontSize
+    this.fontSize,
+    this.useDarkMode
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-        versions: store.state.versions,
-        selectedVersionCode: store.state.selectedVersionCode,
-        fontSize: store.state.fontSize
+      versions: store.state.versions,
+      selectedVersionCode: store.state.selectedVersionCode,
+      fontSize: store.state.fontSize,
+      useDarkMode: store.state.useDarkMode
     );
   }
 }
@@ -142,4 +145,26 @@ class _FontSizeSetting extends StatelessWidget {
       },
     );
   }
+}
+
+class _ThemeSetting extends StatelessWidget {
+  final bool useDarkMode;
+  _ThemeSetting(this.useDarkMode);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Text('다크모드'),
+        Switch(
+          value: useDarkMode,
+          onChanged: (useDark) {
+            var store = StoreProvider.of<AppState>(context);
+            store.dispatch(ChangeDarkModeAction(useDark));
+          },
+        )
+      ],
+    );
+  }
+
 }

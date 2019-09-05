@@ -27,3 +27,8 @@ class ChangeFontSizeAction {
   final double fontSize;
   ChangeFontSizeAction(this.fontSize);
 }
+
+class ChangeDarkModeAction {
+  final bool useDarkMode;
+  ChangeDarkModeAction(this.useDarkMode);
+}

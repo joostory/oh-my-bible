@@ -105,7 +105,6 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${bible.name} $selectedChapter'),
-        backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
         actions: createAppBarActions(context),
       ),
       body: PageView.builder(

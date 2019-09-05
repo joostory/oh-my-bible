@@ -46,19 +46,15 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(64, 64, 64, 0.9),
         title: TextField(
           onChanged: (value) {
-            print('onchange ${value}');
             setState(() {
               searchText = value;
             });
           },
           onSubmitted: (value) async {
-            print('onsubmit ${value}');
             var repository = BibleRepository();
             var results = await repository.searchVerses(widget.vcode, value);
-            print('results ${results}');
             setState(() {
               verses = results;
             });

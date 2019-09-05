@@ -24,18 +24,45 @@ class HolyBibleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider(
       store: store,
-      child: MaterialApp(
-        title: 'Holybible',
-        theme: ThemeData.light(),
-        initialRoute: '/',
-        routes: {
-          MainScreen.routeName: (context) => MainScreen(),
-          BibleListScreen.routeName: (context) => BibleListScreen(),
-          ChapterListScreen.routeName: (context) => ChapterListScreen(),
-          VerseListScreen.routeName: (context) => VerseListScreen(),
-          SearchListScreen.routeName: (context) => SearchListScreen(),
-        }
-      )
+      child: _ThemeApp()
     );
   }
 }
+
+
+class _ThemeApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: _ViewModel.fromStore,
+      builder: (BuildContext context, _ViewModel vm) {
+        return MaterialApp(
+          title: 'Holybible',
+          theme: ThemeData(
+            brightness: vm.useDarkMode? Brightness.dark : Brightness.light,
+            appBarTheme: AppBarTheme(
+              color: Color.fromRGBO(64, 64, 64, 0.9),
+            ),
+          ),
+          initialRoute: '/',
+          routes: {
+            MainScreen.routeName: (context) => MainScreen(),
+            BibleListScreen.routeName: (context) => BibleListScreen(),
+            ChapterListScreen.routeName: (context) => ChapterListScreen(),
+            VerseListScreen.routeName: (context) => VerseListScreen(),
+            SearchListScreen.routeName: (context) => SearchListScreen(),
+          }
+        );
+      },
+    );
+  }
+}
+
+class _ViewModel {
+  final bool useDarkMode;
+  _ViewModel(this.useDarkMode);
+
+  static _ViewModel fromStore(Store<AppState> store) => _ViewModel(store.state.useDarkMode);
+}
+
+
