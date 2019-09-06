@@ -47,6 +47,18 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          textInputAction: TextInputAction.search,
+          style: TextStyle(
+            color: Colors.white
+          ),
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            hintText: '검색',
+            hintStyle: TextStyle(color: Colors.grey),
+            suffixIcon: Icon(Icons.search, color: Colors.white),
+            focusColor: Colors.white,
+            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white))
+          ),
           onChanged: (value) {
             setState(() {
               searchText = value;
