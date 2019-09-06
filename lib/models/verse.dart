@@ -31,7 +31,6 @@ class SearchVerse extends Verse {
 
 
   static SearchVerse fromMap(Map<String, dynamic> item) {
-    print(item);
     return SearchVerse(
       vcode: item['vcode'],
       bcode: item['bcode'],

@@ -5,6 +5,7 @@ import 'package:holybible/components/list.dart';
 import 'package:holybible/models/verse.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
+import 'package:holybible/screens/verselist_screen.dart';
 import 'package:redux/redux.dart';
 
 class SearchListScreen extends StatelessWidget {
@@ -40,6 +41,7 @@ class _SearchListWidget extends StatefulWidget {
 }
 
 class _SearchListWidgetState extends State<_SearchListWidget> {
+  String keyword = '';
   List<SearchVerse> verses = [];
 
   @override
@@ -64,6 +66,7 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
             var repository = BibleRepository();
             var results = await repository.searchVerses(widget.vcode, value);
             setState(() {
+              keyword = value;
               verses = results;
             });
           },
@@ -91,17 +94,61 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
                       fontWeight: FontWeight.bold
                     )
                   ),
-                  Text(verse.content),
+                  _HighlightText(verse.content, keyword)
                 ],
               ),
               padding: EdgeInsets.symmetric(
                 vertical: 5.0
               ),
             ),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                VerseListScreen.routeName,
+                arguments: VerseListScreenArguments(
+                  bcode: verse.bcode,
+                  cnum: verse.cnum
+                )
+              );
+            },
           );
         },
         itemCount: verses.length,
       ),
     );
   }
+}
+
+class _HighlightText extends StatelessWidget {
+  String content;
+  String keyword;
+
+  _HighlightText(this.content, this.keyword);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(TextSpan(
+        children: _makeHighlightWidgets()
+    ));
+  }
+
+  _makeHighlightWidgets() {
+    List<TextSpan> contentWidgets = [];
+    TextSpan keywordWidget = TextSpan(
+        text: keyword,
+        style: TextStyle(fontWeight: FontWeight.bold)
+    );
+
+    List<String> contents = content.split(keyword);
+    contents.asMap().forEach((index, item) {
+      contentWidgets.add(TextSpan(text: item));
+
+      if (index < contents.length - 1) {
+        contentWidgets.add(keywordWidget);
+      }
+    });
+
+    return contentWidgets;
+  }
+
 }
