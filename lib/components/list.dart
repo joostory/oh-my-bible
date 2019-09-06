@@ -28,36 +28,51 @@ class ExpandedAppBar extends StatelessWidget {
 }
 
 List<Widget> createAppBarActions(context) => [
-  IconButton(
-    icon: Icon(Icons.search),
-    onPressed: () {
-      Navigator.pushNamed(
-        context,
-        SearchListScreen.routeName,
-      );
-    },
-  ),
-  IconButton(
-    icon: Icon(Icons.tune),
-    onPressed: () {
-      showDialog(
+  SearchButton(),
+  SettingButton()
+];
+
+class SearchButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.search),
+      onPressed: () {
+        Navigator.pushNamed(
+          context,
+          SearchListScreen.routeName,
+        );
+      },
+    );
+  }
+
+}
+
+class SettingButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.tune),
+      onPressed: () {
+        showDialog(
           context: context,
           builder: (context) {
             return SimpleDialog(
               title: Text('설정'),
               elevation: 4.0,
               children: [
-                AppBarPopupSettings()
+                _AppSettings()
               ],
             );
           }
-      );
-    },
-  )
-];
+        );
+      },
+    );
+  }
+}
 
 
-class AppBarPopupSettings extends StatelessWidget {
+class _AppSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, _ViewModel>(

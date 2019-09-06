@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:holybible/components/list.dart';
 import 'package:holybible/models/verse.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
@@ -39,7 +40,6 @@ class _SearchListWidget extends StatefulWidget {
 }
 
 class _SearchListWidgetState extends State<_SearchListWidget> {
-  String searchText;
   List<SearchVerse> verses = [];
 
   @override
@@ -47,6 +47,7 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          autofocus: true,
           textInputAction: TextInputAction.search,
           style: TextStyle(
             color: Colors.white
@@ -59,11 +60,6 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
             focusColor: Colors.white,
             focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white))
           ),
-          onChanged: (value) {
-            setState(() {
-              searchText = value;
-            });
-          },
           onSubmitted: (value) async {
             var repository = BibleRepository();
             var results = await repository.searchVerses(widget.vcode, value);
@@ -72,6 +68,9 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
             });
           },
         ),
+        actions: <Widget>[
+          SettingButton()
+        ],
       ),
       body: ListView.builder(
         padding: EdgeInsets.only(
