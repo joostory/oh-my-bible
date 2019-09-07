@@ -37,6 +37,7 @@ class _ThemeApp extends StatelessWidget {
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Holybible',
           theme: ThemeData(
             brightness: vm.useDarkMode? Brightness.dark : Brightness.light,

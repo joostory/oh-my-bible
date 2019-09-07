@@ -16,7 +16,7 @@ class SearchListScreen extends StatelessWidget {
     return new StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
-        return _SearchListWidget(vm.vcode);
+        return _SearchListWidget(vm.vcode, vm.fontSize);
       },
     );
   }
@@ -24,17 +24,22 @@ class SearchListScreen extends StatelessWidget {
 
 class _ViewModel {
   final String vcode;
+  final double fontSize;
 
-  _ViewModel(this.vcode);
+  _ViewModel(this.vcode, this.fontSize);
 
   static _ViewModel fromStore(Store<AppState> store) {
-    return _ViewModel(store.state.selectedVersionCode);
+    return _ViewModel(
+      store.state.selectedVersionCode,
+      store.state.fontSize
+    );
   }
 }
 
 class _SearchListWidget extends StatefulWidget {
   final String vcode;
-  _SearchListWidget(this.vcode);
+  final double fontSize;
+  _SearchListWidget(this.vcode, this.fontSize);
 
   @override
   State<StatefulWidget> createState() => _SearchListWidgetState();
@@ -88,13 +93,17 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    '${verse.bibleName} ${verse.cnum}장 ${verse.vnum}절',
+                    '${verse.bibleName} ${verse.cnum} : ${verse.vnum}',
                     style: TextStyle(
-                      fontSize: 12.0,
+                      fontSize: widget.fontSize - 4.0,
                       fontWeight: FontWeight.bold
                     )
                   ),
-                  _HighlightText(verse.content, keyword)
+                  _HighlightText(
+                    content: verse.content,
+                    keyword: keyword,
+                    fontSize: widget.fontSize
+                  )
                 ],
               ),
               padding: EdgeInsets.symmetric(
@@ -120,23 +129,29 @@ class _SearchListWidgetState extends State<_SearchListWidget> {
 }
 
 class _HighlightText extends StatelessWidget {
-  String content;
-  String keyword;
+  final String content;
+  final String keyword;
+  final double fontSize;
 
-  _HighlightText(this.content, this.keyword);
+  _HighlightText({
+    this.content,
+    this.keyword,
+    this.fontSize
+  });
 
   @override
   Widget build(BuildContext context) {
     return Text.rich(TextSpan(
-        children: _makeHighlightWidgets()
+      style: TextStyle(fontSize: fontSize),
+      children: _makeHighlightWidgets()
     ));
   }
 
   _makeHighlightWidgets() {
     List<TextSpan> contentWidgets = [];
     TextSpan keywordWidget = TextSpan(
-        text: keyword,
-        style: TextStyle(fontWeight: FontWeight.bold)
+      text: keyword,
+      style: TextStyle(fontWeight: FontWeight.bold)
     );
 
     List<String> contents = content.split(keyword);
