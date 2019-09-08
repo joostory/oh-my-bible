@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/components/list.dart';
@@ -182,25 +183,7 @@ class _VerseListState extends State<_VerseList> {
             top: 15.0,
             bottom: 15.0
           ),
-          itemBuilder: (context, index) => Container(
-            child: Text.rich(
-              TextSpan(
-                style: TextStyle(
-                  fontSize: vm.fontSize,
-                ),
-                children: [
-                  TextSpan(text:'${index + 1}  ', style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  )),
-                  TextSpan(text:verses[index].content)
-                ]
-              ),
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 15.0,
-              vertical: 5.0
-            ),
-          ),
+          itemBuilder: (context, index) => _VerseListitem(verses[index], vm.fontSize),
           itemCount: verses.length,
         );
       },
@@ -215,5 +198,52 @@ class _VerseListViewModel {
 
   static _VerseListViewModel fromStore(Store<AppState> store) {
     return _VerseListViewModel(store.state.fontSize);
+  }
+}
+
+class _VerseListitem extends StatelessWidget {
+  final Verse verse;
+  final double fontSize;
+  _VerseListitem(this.verse, this.fontSize);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.topRight,
+              padding: EdgeInsets.only(
+                top: fontSize / 4,
+                right: 5.0
+              ),
+              child: Text(
+                '${verse.vnum}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontSize - fontSize / 4
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 9,
+            child: Text(
+              verse.content,
+              style: TextStyle(
+                fontSize: fontSize
+              )
+            )
+          )
+        ],
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 15.0,
+        vertical: 5.0
+      ),
+    );
   }
 }
