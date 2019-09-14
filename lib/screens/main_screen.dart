@@ -5,7 +5,7 @@ import 'package:holybible/reducers/app_state.dart';
 import 'package:redux/redux.dart';
 
 import '../models/version.dart';
-import 'biblelist_screen.dart';
+import 'bible/biblelist_screen.dart';
 
 class MainScreen extends StatelessWidget {
   static String routeName = '/';
@@ -21,8 +21,8 @@ class MainScreen extends StatelessWidget {
       onDidChange: (_ViewModel vm) {
         if (vm.initialized) {
           Navigator.pushReplacementNamed(
-              context,
-              BibleListScreen.routeName
+            context,
+            BibleListScreen.routeName
           );
         }
       },

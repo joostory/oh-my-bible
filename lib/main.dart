@@ -3,10 +3,11 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/middleware/middlewares.dart';
 import 'package:holybible/reducers/app_reducer.dart';
 import 'package:holybible/reducers/app_state.dart';
-import 'package:holybible/screens/biblelist_screen.dart';
-import 'package:holybible/screens/chapterlist_screen.dart';
-import 'package:holybible/screens/searchlist_screen.dart';
-import 'package:holybible/screens/verselist_screen.dart';
+import 'package:holybible/screens/bible/biblelist_screen.dart';
+import 'package:holybible/screens/bible/chapterlist_screen.dart';
+import 'package:holybible/screens/hymn/hymnlist_screen.dart';
+import 'package:holybible/screens/bible/searchlist_screen.dart';
+import 'package:holybible/screens/bible/verselist_screen.dart';
 import 'package:holybible/screens/main_screen.dart';
 import 'package:redux/redux.dart';
 
@@ -52,6 +53,7 @@ class _ThemeApp extends StatelessWidget {
             ChapterListScreen.routeName: (context) => ChapterListScreen(),
             VerseListScreen.routeName: (context) => VerseListScreen(),
             SearchListScreen.routeName: (context) => SearchListScreen(),
+            HymnListScreen.routeName: (context) => HymnListScreen()
           }
         );
       },
