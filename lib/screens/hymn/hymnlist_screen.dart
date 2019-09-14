@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:holybible/components/list.dart';
+import 'package:holybible/components/layout.dart';
 import 'package:holybible/models/hymn.dart';
 import 'package:holybible/repository/hymn_repository.dart';
+import 'package:holybible/screens/hymn/hymnscore_screen.dart';
 
 class HymnListScreen extends StatelessWidget {
   static String routeName = '/hymn';
@@ -41,17 +42,25 @@ class _HymnListState extends State<_HymnListWidget> {
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(
-              (context, index) => ListTile(
-                  title: Text(hymns[index].title),
+              (context, index) {
+                var hymn = hymns[index];
+                return ListTile(
+                  title: Text('${hymn.number}장 ${hymn.title}'),
                   onTap: () {
-                    //
+                    Navigator.pushNamed(
+                      context,
+                      HymnScoreScreen.routeName,
+                      arguments: HymnSoreScreenArguments(hymn)
+                    );
                   },
-                ),
-                childCount: hymns.length
+                );
+              },
+              childCount: hymns.length
             )
           )
         ],
-      )
+      ),
+      bottomNavigationBar: AppNavigationBar(1),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:holybible/screens/bible/chapterlist_screen.dart';
 import 'package:holybible/screens/hymn/hymnlist_screen.dart';
 import 'package:holybible/screens/bible/searchlist_screen.dart';
 import 'package:holybible/screens/bible/verselist_screen.dart';
+import 'package:holybible/screens/hymn/hymnscore_screen.dart';
 import 'package:holybible/screens/main_screen.dart';
 import 'package:redux/redux.dart';
 
@@ -46,14 +47,15 @@ class _ThemeApp extends StatelessWidget {
               color: Color.fromRGBO(64, 64, 64, 0.9),
             ),
           ),
-          initialRoute: '/',
+          initialRoute: MainScreen.routeName,
           routes: {
             MainScreen.routeName: (context) => MainScreen(),
             BibleListScreen.routeName: (context) => BibleListScreen(),
             ChapterListScreen.routeName: (context) => ChapterListScreen(),
             VerseListScreen.routeName: (context) => VerseListScreen(),
             SearchListScreen.routeName: (context) => SearchListScreen(),
-            HymnListScreen.routeName: (context) => HymnListScreen()
+            HymnListScreen.routeName: (context) => HymnListScreen(),
+            HymnScoreScreen.routeName: (context) => HymnScoreScreen(),
           }
         );
       },

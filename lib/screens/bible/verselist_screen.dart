@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:holybible/components/list.dart';
+import 'package:holybible/components/layout.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
 import 'package:holybible/reducers/app_state.dart';
@@ -106,7 +106,10 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${bible.name} $selectedChapter'),
-        actions: createAppBarActions(context),
+        actions: [
+          SearchButton(),
+          SettingButton()
+        ],
       ),
       body: PageView.builder(
         controller: PageController(

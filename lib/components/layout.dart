@@ -3,8 +3,34 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/actions/actions.dart';
 import 'package:holybible/models/version.dart';
 import 'package:holybible/reducers/app_state.dart';
+import 'package:holybible/screens/bible/biblelist_screen.dart';
 import 'package:holybible/screens/bible/searchlist_screen.dart';
+import 'package:holybible/screens/hymn/hymnlist_screen.dart';
 import 'package:redux/redux.dart';
+
+class BibleExpandedAppBar extends StatelessWidget {
+  final String _title;
+
+  BibleExpandedAppBar(this._title);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      floating: false,
+      pinned: true,
+      snap: false,
+      expandedHeight: 100.0,
+      flexibleSpace: FlexibleSpaceBar(
+        title: Text(_title),
+        centerTitle: true
+      ),
+      actions: [
+        SearchButton(),
+        SettingButton()
+      ],
+    );
+  }
+}
 
 class ExpandedAppBar extends StatelessWidget {
   final String _title;
@@ -19,18 +45,15 @@ class ExpandedAppBar extends StatelessWidget {
       snap: false,
       expandedHeight: 100.0,
       flexibleSpace: FlexibleSpaceBar(
-        title: Text(_title),
-        centerTitle: true
+          title: Text(_title),
+          centerTitle: true
       ),
-      actions: createAppBarActions(context),
+      actions: [
+        SettingButton()
+      ],
     );
   }
 }
-
-List<Widget> createAppBarActions(context) => [
-  SearchButton(),
-  SettingButton()
-];
 
 class SearchButton extends StatelessWidget {
   @override
@@ -45,7 +68,6 @@ class SearchButton extends StatelessWidget {
       },
     );
   }
-
 }
 
 class SettingButton extends StatelessWidget {
@@ -181,5 +203,49 @@ class _ThemeSetting extends StatelessWidget {
       ],
     );
   }
+}
 
+
+class _AppNavigationItem {
+  IconData icon;
+  String title;
+  String routeName;
+
+  _AppNavigationItem({this.icon, this.title, this.routeName});
+}
+
+var _appNavigationItems = <_AppNavigationItem>[
+  _AppNavigationItem(
+    icon: Icons.book,
+    title: '성경',
+    routeName: BibleListScreen.routeName
+  ),
+  _AppNavigationItem(
+    icon: Icons.music_note,
+    title: '찬송가',
+    routeName: HymnListScreen.routeName
+  )
+];
+
+class AppNavigationBar extends StatelessWidget {
+  final int _currentIndex;
+  AppNavigationBar(this._currentIndex);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      items: _appNavigationItems.map((item) => BottomNavigationBarItem(
+        icon: Icon(item.icon),
+        title: Text(item.title)
+      )).toList(),
+      onTap: (index) {
+        Navigator.pushReplacementNamed(
+          context,
+          _appNavigationItems[index].routeName
+        );
+      },
+    );
+  }
+  
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:holybible/components/list.dart';
+import 'package:holybible/components/layout.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/version.dart';
 import 'package:holybible/reducers/app_state.dart';
@@ -81,7 +81,7 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          ExpandedAppBar(widget.version.name),
+          BibleExpandedAppBar(widget.version.name),
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(
@@ -107,7 +107,8 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
             )
           )
         ],
-      )
+      ),
+      bottomNavigationBar: AppNavigationBar(0),
     );
   }
 
