@@ -234,11 +234,11 @@ class _VerseListitem extends StatelessWidget {
           ),
           Expanded(
             flex: 9,
-            child: Text(
+            child: SelectableText(
               verse.content,
               style: TextStyle(
                 fontSize: fontSize
-              )
+              ),
             )
           )
         ],
