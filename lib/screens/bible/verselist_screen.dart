@@ -116,7 +116,7 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
           initialPage: selectedChapter - 1
         ),
         itemBuilder: (context, index) => _VerseList(
-          bible :bible,
+          bible: bible,
           cnum: index + 1,
         ),
         itemCount: bible.chapterCount,

@@ -1,20 +1,44 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/components/layout.dart';
 import 'package:holybible/models/hymn.dart';
 import 'package:holybible/repository/hymn_repository.dart';
 import 'package:holybible/screens/hymn/hymnscore_screen.dart';
+import 'package:redux/redux.dart';
 
 class HymnListScreen extends StatelessWidget {
   static String routeName = '/';
 
   @override
   Widget build(BuildContext context) {
-    return _HymnListWidget();
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: _ViewModel.fromStore,
+      builder: (BuildContext context, _ViewModel vm) {
+        return _HymnListWidget(
+          fontSize: vm.fontSize
+        );
+      },
+    );
+  }
+}
+
+class _ViewModel {
+  final double fontSize;
+  _ViewModel({this.fontSize});
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel(
+      fontSize: store.state.fontSize
+    );
   }
 }
 
 class _HymnListWidget extends StatefulWidget {
+  final double fontSize;
+  _HymnListWidget({this.fontSize});
+
   @override
   State<StatefulWidget> createState() {
     return _HymnListState();
@@ -45,12 +69,23 @@ class _HymnListState extends State<_HymnListWidget> {
               (context, index) {
                 var hymn = hymns[index];
                 return ListTile(
-                  title: Text('${hymn.number}장 ${hymn.title}'),
+                  title: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: '${hymn.number}.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: widget.fontSize)),
+                        TextSpan(text: ' '),
+                        TextSpan(text: '${hymn.title}', style: TextStyle(fontSize: widget.fontSize))
+                      ]
+                    ),
+                  ),
                   onTap: () {
                     Navigator.pushNamed(
                       context,
                       HymnScoreScreen.routeName,
-                      arguments: HymnSoreScreenArguments(hymn)
+                      arguments: HymnSoreScreenArguments(
+                        number: hymn.number,
+                        length: hymns.length
+                      )
                     );
                   },
                 );

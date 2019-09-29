@@ -1,7 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:holybible/models/hymn.dart';
 import 'package:photo_view/photo_view.dart';
 
 class HymnScoreScreen extends StatelessWidget {
@@ -10,31 +9,79 @@ class HymnScoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HymnSoreScreenArguments args = ModalRoute.of(context).settings.arguments;
-    return _HymnScoreWidget(args.hymn);
+    return _HymnScoreWidget(
+      selectedNumber: args.number,
+      hymnCount: args.length
+    );
   }
 }
 
 class HymnSoreScreenArguments {
-  final Hymn hymn;
-  HymnSoreScreenArguments(this.hymn);
+  final int number;
+  final int length;
+  HymnSoreScreenArguments({
+    this.number,
+    this.length
+  });
 }
 
-class _HymnScoreWidget extends StatelessWidget {
-  final Hymn hymn;
-  _HymnScoreWidget(this.hymn);
+class _HymnScoreWidget extends StatefulWidget {
+  final int selectedNumber;
+  final int hymnCount;
+  _HymnScoreWidget({
+    this.selectedNumber,
+    this.hymnCount
+  });
+
+  @override
+  State<StatefulWidget> createState() {
+    return _HymnScoreState(
+      selectedIndex: selectedNumber - 1,
+    );
+  }
+}
+
+class _HymnScoreState extends State<_HymnScoreWidget> {
+  int selectedIndex;
+  _HymnScoreState({
+    this.selectedIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var imagePath = 'assets/hymns/newhymn-${hymn.number.toString().padLeft(3, '0')}.jpg';
-    print(imagePath);
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        child: PhotoView(
-          imageProvider: AssetImage(imagePath),
-          backgroundDecoration: BoxDecoration(
-            color: Colors.white
-          ),
+      body: PageView.builder(
+        controller: PageController(
+          initialPage: selectedIndex
+        ),
+        itemBuilder: (BuildContext context, int index) => _HymnScorePostView(
+          index + 1
+        ),
+        itemCount: widget.hymnCount,
+        onPageChanged: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+
+      )
+    );
+  }
+}
+
+class _HymnScorePostView extends StatelessWidget {
+  final int number;
+  _HymnScorePostView(this.number);
+
+  @override
+  Widget build(BuildContext context) {
+    var imagePath = 'assets/hymns/newhymn-${number.toString().padLeft(3, '0')}.jpg';
+    return Container(
+      child: PhotoView(
+        imageProvider: AssetImage(imagePath),
+        backgroundDecoration: BoxDecoration(
+          color: Colors.white
         ),
       )
     );
