@@ -6,7 +6,7 @@ import 'package:holybible/repository/hymn_repository.dart';
 import 'package:holybible/screens/hymn/hymnscore_screen.dart';
 
 class HymnListScreen extends StatelessWidget {
-  static String routeName = '/hymn';
+  static String routeName = '/';
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class _HymnListState extends State<_HymnListWidget> {
           )
         ],
       ),
-      bottomNavigationBar: AppNavigationBar(1),
+      // bottomNavigationBar: AppNavigationBar(1),
     );
   }
 }

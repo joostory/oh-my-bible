@@ -9,7 +9,7 @@ import 'package:holybible/screens/bible/chapterlist_screen.dart';
 import 'package:redux/redux.dart';
 
 class BibleListScreen extends StatelessWidget {
-  static String routeName = '/bible';
+  static String routeName = '/';
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +108,7 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
           )
         ],
       ),
-      bottomNavigationBar: AppNavigationBar(0),
+      // bottomNavigationBar: AppNavigationBar(0),
     );
   }
 
