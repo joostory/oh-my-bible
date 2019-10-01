@@ -3,9 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/actions/actions.dart';
 import 'package:holybible/models/version.dart';
 import 'package:holybible/reducers/app_state.dart';
-import 'package:holybible/screens/bible/biblelist_screen.dart';
 import 'package:holybible/screens/bible/searchlist_screen.dart';
-import 'package:holybible/screens/hymn/hymnlist_screen.dart';
 import 'package:redux/redux.dart';
 
 class BibleExpandedAppBar extends StatelessWidget {

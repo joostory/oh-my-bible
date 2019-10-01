@@ -75,7 +75,8 @@ class _HymnListState extends State<_HymnListWidget> {
                         TextSpan(text: '${hymn.number}.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: widget.fontSize)),
                         TextSpan(text: ' '),
                         TextSpan(text: '${hymn.title}', style: TextStyle(fontSize: widget.fontSize))
-                      ]
+                      ],
+                      style: Theme.of(context).textTheme.title
                     ),
                   ),
                   onTap: () {
