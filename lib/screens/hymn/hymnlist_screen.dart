@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/reducers/app_state.dart';
-import 'package:holybible/components/layout.dart';
+import 'package:holybible/components/app_bar.dart';
 import 'package:holybible/models/hymn.dart';
 import 'package:holybible/repository/hymn_repository.dart';
 import 'package:holybible/screens/hymn/hymnscore_screen.dart';
@@ -62,7 +62,7 @@ class _HymnListState extends State<_HymnListWidget> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          ExpandedAppBar("찬송가"),
+          HymnExpandedAppBar("찬송가"),
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(

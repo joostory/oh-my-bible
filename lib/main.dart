@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/actions/actions.dart';
-import 'package:holybible/components/layout.dart';
 import 'package:holybible/middleware/middlewares.dart';
 import 'package:holybible/reducers/app_reducer.dart';
 import 'package:holybible/reducers/app_state.dart';
@@ -12,6 +11,8 @@ import 'package:holybible/screens/bible/searchlist_screen.dart';
 import 'package:holybible/screens/bible/verselist_screen.dart';
 import 'package:holybible/screens/hymn/hymnscore_screen.dart';
 import 'package:redux/redux.dart';
+
+import 'components/navigation_bar.dart';
 
 void main() => runApp(HolyBibleApp());
 

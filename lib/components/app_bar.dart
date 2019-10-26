@@ -6,34 +6,27 @@ import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/screens/bible/searchlist_screen.dart';
 import 'package:redux/redux.dart';
 
-class BibleExpandedAppBar extends StatelessWidget {
-  final String _title;
-
-  BibleExpandedAppBar(this._title);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      floating: false,
-      pinned: true,
-      snap: false,
-      expandedHeight: 100.0,
-      flexibleSpace: FlexibleSpaceBar(
-        title: Text(_title),
-        centerTitle: true
-      ),
-      actions: [
+class BibleExpandedAppBar extends _ExpandedAppBar {
+  BibleExpandedAppBar(String title)
+    : super(title, [
         SearchButton(),
         SettingButton()
-      ],
-    );
-  }
+      ]);
 }
 
-class ExpandedAppBar extends StatelessWidget {
-  final String _title;
+class HymnExpandedAppBar extends _ExpandedAppBar {
+  HymnExpandedAppBar(String title)
+    : super(title, [
+        // SearchHymnButton(),
+        SettingButton()
+      ]);
+}
 
-  ExpandedAppBar(this._title);
+class _ExpandedAppBar extends StatelessWidget {
+  final String _title;
+  final List<Widget> _actions;
+
+  _ExpandedAppBar(this._title, this._actions);
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +39,87 @@ class ExpandedAppBar extends StatelessWidget {
           title: Text(_title),
           centerTitle: true
       ),
-      actions: [
-        SettingButton()
-      ],
+      actions: _actions,
     );
+  }
+}
+
+class SearchHymnButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.search),
+      onPressed: () {
+        showSearch(
+          context: context,
+          delegate: _SearchHymnDelegate()
+        );
+      },
+    );
+  }
+}
+
+class _SearchHymnDelegate extends SearchDelegate {
+
+  _SearchHymnDelegate()
+    : super(
+      searchFieldLabel: "찬송가",
+      keyboardType: TextInputType.text
+    );
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    assert(context != null);
+    final ThemeData theme = Theme.of(context);
+    assert(theme != null);
+    return theme;
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) => [
+    IconButton(
+      icon: Icon(Icons.clear),
+      onPressed: () {
+        query = '';
+      },
+    ),
+  ];
+
+  @override
+  Widget buildLeading(BuildContext context) => IconButton(
+    icon: Icon(Icons.arrow_back),
+    onPressed: () {
+      close(context, null);
+    },
+  );
+
+  @override
+  Widget buildResults(BuildContext context) {
+    if (query.length < 3) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Text(
+              "Search term must be longer than two letters.",
+            ),
+          )
+        ],
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Center(child: CircularProgressIndicator()),
+                ]
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Column();
   }
 }
 
@@ -204,47 +274,3 @@ class _ThemeSetting extends StatelessWidget {
 }
 
 
-class AppNavigationItem {
-  IconData icon;
-  String title;
-  Widget app;
-
-  AppNavigationItem({this.icon, this.title, this.app});
-}
-
-// var _appNavigationItems = <_AppNavigationItem>[
-//   _AppNavigationItem(
-//     icon: Icons.book,
-//     title: '성경',
-//     routeName: BibleListScreen.routeName
-//   ),
-//   _AppNavigationItem(
-//     icon: Icons.music_note,
-//     title: '찬송가',
-//     routeName: HymnListScreen.routeName
-//   )
-// ];
-
-class AppNavigationBar extends StatelessWidget {
-  final int _currentIndex;
-  final Function(int) _onChange;
-  final List<AppNavigationItem> _items;
-
-  AppNavigationBar({index, onChange, items})
-    : _currentIndex = index,
-      _onChange = onChange,
-      _items = items;
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      items: _items.map((item) => BottomNavigationBarItem(
-        icon: Icon(item.icon),
-        title: Text(item.title)
-      )).toList(),
-      onTap: this._onChange,
-    );
-  }
-  
-}

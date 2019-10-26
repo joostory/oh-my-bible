@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:holybible/components/layout.dart';
+import 'package:holybible/components/app_bar.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/version.dart';
 import 'package:holybible/reducers/app_state.dart';
