@@ -5,7 +5,6 @@ import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/hymn_repository.dart';
 import 'package:holybible/screens/hymn/hymnscore_screen.dart';
 import 'package:redux/redux.dart';
-import 'package:decimal/decimal.dart';
 
 
 class HymnSearchList extends StatelessWidget {
@@ -54,13 +53,13 @@ class _HymnSearchListState extends State<_HymnSearchListWidget> {
   void initState() {
     super.initState();
     var result;
-    
-    if (Decimal.parse(widget.query).isInteger) {
+
+    if (int.tryParse(widget.query) != null) {
       result = HymnRepository().findByNumber(widget.query);
     } else {
       result = HymnRepository().findByKeyword(widget.query);
     }
-
+    
     result.then((results) {
       setState(() {
         searched = true;
