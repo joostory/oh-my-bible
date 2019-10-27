@@ -20,4 +20,12 @@ class Hymn {
         title: item['title'],
     );
   }
+
+  static List<Hymn> fromMapList(List<Map<String, dynamic>> items) {
+    List<Hymn> list = new List<Hymn>();
+    items.forEach((item) {
+      list.add(Hymn.fromMap(item));
+    });
+    return list;
+  }
 }

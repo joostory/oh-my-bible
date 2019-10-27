@@ -12,10 +12,32 @@ class HymnRepository {
       orderBy: 'number asc'
     );
 
-    List<Hymn> list = new List<Hymn>();
-    results.forEach((item) {
-      list.add(Hymn.fromMap(item));
-    });
-    return list;
+    return Hymn.fromMapList(results);
+  }
+
+  Future<List<Hymn>> findByKeyword(String keyword) async {
+    var db = await BibleDatabase.getDb();
+    var results = await db.query(
+      'hymns',
+      columns: ['number', 'title'],
+      where: 'version="new" and title like ?',
+      whereArgs: ["%$keyword%"],
+      orderBy: 'number asc'
+    );
+
+    return Hymn.fromMapList(results);
+  }
+
+  Future<List<Hymn>> findByNumber(String number) async {
+    var db = await BibleDatabase.getDb();
+    var results = await db.query(
+      'hymns',
+      columns: ['number', 'title'],
+      where: 'version="new" and number like ?',
+      whereArgs: ["%$number%"],
+      orderBy: 'number asc'
+    );
+
+    return Hymn.fromMapList(results);
   }
 }

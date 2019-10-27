@@ -21,13 +21,21 @@ class Verse {
 
 class SearchVerse extends Verse {
   String bibleName;
-  String vcode;
-  int bcode;
-  int cnum;
-  int vnum;
-  String content;
 
-  SearchVerse({this.vcode, this.bcode, this.cnum, this.vnum, this.content, this.bibleName});
+  SearchVerse({
+    vcode,
+    bcode,
+    cnum,
+    vnum,
+    content,
+    this.bibleName
+  }): super(
+        vcode: vcode,
+        bcode: bcode,
+        cnum: cnum,
+        vnum: vnum,
+        content: content
+      );
 
 
   static SearchVerse fromMap(Map<String, dynamic> item) {

@@ -7,7 +7,6 @@ import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/screens/bible/biblelist_screen.dart';
 import 'package:holybible/screens/bible/chapterlist_screen.dart';
 import 'package:holybible/screens/hymn/hymnlist_screen.dart';
-import 'package:holybible/screens/bible/searchlist_screen.dart';
 import 'package:holybible/screens/bible/verselist_screen.dart';
 import 'package:holybible/screens/hymn/hymnscore_screen.dart';
 import 'package:redux/redux.dart';
@@ -118,7 +117,6 @@ class _BibleApp extends StatelessWidget {
             BibleListScreen.routeName: (context) => BibleListScreen(),
             ChapterListScreen.routeName: (context) => ChapterListScreen(),
             VerseListScreen.routeName: (context) => VerseListScreen(),
-            SearchListScreen.routeName: (context) => SearchListScreen(),
           },
         );
       },
