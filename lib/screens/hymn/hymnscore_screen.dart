@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:wakelock/wakelock.dart';
 
 class HymnScoreScreen extends StatelessWidget {
   static String routeName = '/hymn/score';
@@ -46,6 +47,18 @@ class _HymnScoreState extends State<_HymnScoreWidget> {
   _HymnScoreState({
     this.selectedIndex,
   });
+
+  @override
+  void initState() {
+    super.initState();
+    Wakelock.enable();
+  }
+
+  @override
+  void dispose() {
+    Wakelock.disable();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

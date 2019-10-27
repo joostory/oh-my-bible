@@ -7,6 +7,7 @@ import 'package:holybible/models/verse.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
 import 'package:redux/redux.dart';
+import 'package:wakelock/wakelock.dart';
 
 class VerseListScreen extends StatelessWidget {
   static String routeName = '/bible/verse';
@@ -73,7 +74,14 @@ class _VerseListWidgetState extends State<_VerseListWidget> {
   @override
   void initState() {
     super.initState();
+    Wakelock.enable();
     _loadBible();
+  }
+
+  @override
+  void dispose() {
+    Wakelock.disable();
+    super.dispose();
   }
 
   @override
