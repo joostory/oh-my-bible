@@ -1,4 +1,5 @@
 
+import 'package:holybible/models/hymn.dart';
 import 'package:holybible/models/version.dart';
 
 class LoadAppInfoAction {}
@@ -31,4 +32,9 @@ class ChangeFontSizeAction {
 class ChangeDarkModeAction {
   final bool useDarkMode;
   ChangeDarkModeAction(this.useDarkMode);
+}
+
+class ReceiveHymnsAction {
+  final List<Hymn> hymns;
+  ReceiveHymnsAction(this.hymns);
 }

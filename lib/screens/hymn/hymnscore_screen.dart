@@ -1,7 +1,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:holybible/models/hymn.dart';
+import 'package:holybible/reducers/app_state.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:redux/redux.dart';
 import 'package:wakelock/wakelock.dart';
 
 class HymnScoreScreen extends StatelessWidget {
@@ -10,20 +14,34 @@ class HymnScoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HymnSoreScreenArguments args = ModalRoute.of(context).settings.arguments;
-    return _HymnScoreWidget(
-      selectedNumber: args.number,
-      hymnCount: args.length
+    return new StoreConnector<AppState, _ViewModel>(
+      converter: _ViewModel.fromStore,
+      builder: (BuildContext context, _ViewModel vm) {
+        return _HymnScoreWidget(
+          selectedNumber: args.number,
+          hymnCount: vm.hymns.length,
+        );
+      },
     );
   }
 }
 
 class HymnSoreScreenArguments {
   final int number;
-  final int length;
   HymnSoreScreenArguments({
-    this.number,
-    this.length
+    this.number
   });
+}
+
+class _ViewModel {
+  final List<Hymn> hymns;
+  _ViewModel({this.hymns});
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel(
+      hymns: store.state.hymns
+    );
+  }
 }
 
 class _HymnScoreWidget extends StatefulWidget {

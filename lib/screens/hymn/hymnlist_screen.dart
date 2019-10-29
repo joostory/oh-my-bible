@@ -4,7 +4,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/components/app_bar.dart';
 import 'package:holybible/models/hymn.dart';
-import 'package:holybible/repository/hymn_repository.dart';
 import 'package:holybible/screens/hymn/hymnscore_screen.dart';
 import 'package:redux/redux.dart';
 
@@ -17,6 +16,7 @@ class HymnListScreen extends StatelessWidget {
       converter: _ViewModel.fromStore,
       builder: (BuildContext context, _ViewModel vm) {
         return _HymnListWidget(
+          hymns: vm.hymns,
           fontSize: vm.fontSize
         );
       },
@@ -25,37 +25,22 @@ class HymnListScreen extends StatelessWidget {
 }
 
 class _ViewModel {
+  final List<Hymn> hymns;
   final double fontSize;
-  _ViewModel({this.fontSize});
+  _ViewModel({this.hymns, this.fontSize});
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
+      hymns: store.state.hymns,
       fontSize: store.state.fontSize
     );
   }
 }
 
-class _HymnListWidget extends StatefulWidget {
+class _HymnListWidget extends StatelessWidget {
+  final List<Hymn> hymns;
   final double fontSize;
-  _HymnListWidget({this.fontSize});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _HymnListState();
-  }
-}
-
-class _HymnListState extends State<_HymnListWidget> {
-  List<Hymn> hymns = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    HymnRepository()
-      .loadHymns()
-      .then((loaded) => setState(() => hymns = loaded));
-  }
+  _HymnListWidget({this.hymns, this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +57,9 @@ class _HymnListState extends State<_HymnListWidget> {
                   title: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: '${hymn.number}.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: widget.fontSize)),
+                        TextSpan(text: '${hymn.number}.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize)),
                         TextSpan(text: ' '),
-                        TextSpan(text: '${hymn.title}', style: TextStyle(fontSize: widget.fontSize))
+                        TextSpan(text: '${hymn.title}', style: TextStyle(fontSize: fontSize))
                       ],
                       style: Theme.of(context).textTheme.title
                     ),
@@ -84,8 +69,7 @@ class _HymnListState extends State<_HymnListWidget> {
                       context,
                       HymnScoreScreen.routeName,
                       arguments: HymnSoreScreenArguments(
-                        number: hymn.number,
-                        length: hymns.length
+                        number: hymn.number
                       )
                     );
                   },
@@ -100,3 +84,4 @@ class _HymnListState extends State<_HymnListWidget> {
     );
   }
 }
+

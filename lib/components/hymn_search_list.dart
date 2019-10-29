@@ -106,7 +106,6 @@ class _HymnSearchListState extends State<_HymnSearchListWidget> {
               HymnScoreScreen.routeName,
               arguments: HymnSoreScreenArguments(
                 number: hymn.number,
-                length: hymns.length
               )
             );
           },
