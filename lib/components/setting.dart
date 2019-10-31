@@ -106,6 +106,7 @@ class _ThemeSetting extends StatelessWidget {
         Text('다크모드'),
         Switch(
           value: useDarkMode,
+          activeColor: Theme.of(context).accentColor,
           onChanged: (useDark) {
             var store = StoreProvider.of<AppState>(context);
             store.dispatch(ChangeDarkModeAction(useDark));

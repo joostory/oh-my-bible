@@ -35,8 +35,10 @@ class HolyBibleApp extends StatelessWidget {
 ThemeData makeThemeData(bool useDarkMode) => ThemeData(
   brightness: useDarkMode? Brightness.dark : Brightness.light,
   appBarTheme: AppBarTheme(
-    color: Color.fromRGBO(64, 64, 64, 0.9),
+    color: useDarkMode? Color(0xee404040) : Color(0xee333333),
   ),
+  primaryColor: Color(0xff333333),
+  accentColor: Color(0xfff9dc41),
 );
 
 var _appNavigationItems = <AppNavigationItem>[
