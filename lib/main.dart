@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/actions/actions.dart';
@@ -12,6 +14,10 @@ import 'package:holybible/screens/hymn/hymnscore_screen.dart';
 import 'package:redux/redux.dart';
 
 import 'components/navigation_bar.dart';
+
+FirebaseAnalytics analytics = FirebaseAnalytics();
+FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+
 
 void main() => runApp(HolyBibleApp());
 
@@ -93,7 +99,9 @@ class _ThemeAppState extends State<_ThemeApp> {
         }
 
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: makeThemeData(vm.useDarkMode),
+          navigatorObservers: [observer],
           home: home,
         );
       },
