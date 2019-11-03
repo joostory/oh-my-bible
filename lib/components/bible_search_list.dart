@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:holybible/components/list/bible_list_widget.dart';
+import 'package:holybible/components/list/common_list_widget.dart';
+import 'package:holybible/components/text.dart';
+import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
@@ -48,13 +52,34 @@ class _BibleSearchListWidget extends StatefulWidget {
 
 class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
   bool searched = false;
+  List<Bible> bibles = [];
   List<SearchVerse> verses = [];
 
   @override
   void initState() {
     super.initState();
-    BibleRepository()
-      .searchVerses(widget.vcode, widget.query)
+    if (widget.query.length == 0) {
+      setState(() {
+        searched = true;
+        bibles = [];
+        verses = [];
+      });
+      return;
+    }
+
+    _searchResults();
+  }
+
+  void _searchResults() {
+    var repository = BibleRepository();
+    repository.searchBibles(widget.vcode, widget.query)
+      .then((results) {
+        setState(() {
+          searched = true;
+          bibles = results;
+        });
+      });
+    repository.searchVerses(widget.vcode, widget.query)
       .then((results) {
         setState(() {
           searched = true;
@@ -66,104 +91,84 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
   @override
   Widget build(BuildContext context) {
     if (!searched) {
-      return Container(
-        child: Center(
-          child: CircularProgressIndicator()
-        )
-      );
+      return Loading();
     }
 
-    if (verses.length == 0) {
-      return Container(
-        child: Center(
-          child: Text("검색 결과가 없습니다.")
-        )
-      );
+    if (bibles.length == 0 && verses.length == 0) {
+      return ListMessage(message: "검색 결과가 없습니다.");
     }
 
-    return ListView.builder(
-      padding: EdgeInsets.only(
-        top: 15.0,
-        bottom: 15.0
-      ),
-      itemBuilder: (context, index) {
-        var verse = verses[index];
-        return ListTile(
-          title: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  '${verse.bibleName} ${verse.cnum} : ${verse.vnum}',
-                  style: TextStyle(
-                    fontSize: widget.fontSize - 4.0,
-                    fontWeight: FontWeight.bold
-                  )
-                ),
-                _HighlightText(
-                  content: verse.content,
-                  keyword: widget.query,
-                  fontSize: widget.fontSize
-                )
-              ],
-            ),
-            padding: EdgeInsets.symmetric(
-              vertical: 5.0
-            ),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildListDelegate(
+            bibles.map((item) => BibleListTileWidget(
+              bible: item,
+              fontSize: widget.fontSize
+            )).toList()
           ),
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              VerseListScreen.routeName,
-              arguments: VerseListScreenArguments(
-                bcode: verse.bcode,
-                cnum: verse.cnum
-              )
-            );
-          },
-        );
-      },
-      itemCount: verses.length,
+        ),
+        _VerseResultWidget(
+          verses: verses,
+          fontSize: widget.fontSize,
+          query: widget.query
+        )
+      ],
     );
   }
+    
 }
 
-class _HighlightText extends StatelessWidget {
-  final String content;
-  final String keyword;
-  final double fontSize;
 
-  _HighlightText({
-    this.content,
-    this.keyword,
-    this.fontSize
+class _VerseResultWidget extends StatelessWidget {
+  final List<SearchVerse> verses;
+  final double fontSize;
+  final String query;
+
+  _VerseResultWidget({
+    this.verses,
+    this.fontSize,
+    this.query
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text.rich(TextSpan(
-      style: TextStyle(fontSize: fontSize),
-      children: _makeHighlightWidgets()
-    ));
-  }
-
-  _makeHighlightWidgets() {
-    List<TextSpan> contentWidgets = [];
-    TextSpan keywordWidget = TextSpan(
-      text: keyword,
-      style: TextStyle(fontWeight: FontWeight.bold)
+    return SliverList(
+      delegate: SliverChildListDelegate(verses.map((verse) => ListTile(
+        title: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '${verse.bibleName} ${verse.cnum} : ${verse.vnum}',
+                style: TextStyle(
+                  fontSize: fontSize - 4.0,
+                  fontWeight: FontWeight.bold
+                )
+              ),
+              HighlightText(
+                content: verse.content,
+                keyword: query,
+                fontSize: fontSize
+              )
+            ],
+          ),
+          padding: EdgeInsets.symmetric(
+            vertical: 5.0
+          ),
+        ),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            VerseListScreen.routeName,
+            arguments: VerseListScreenArguments(
+              bcode: verse.bcode,
+              cnum: verse.cnum
+            )
+          );
+        },
+      )).toList()),
     );
-
-    List<String> contents = content.split(keyword);
-    contents.asMap().forEach((index, item) {
-      contentWidgets.add(TextSpan(text: item));
-
-      if (index < contents.length - 1) {
-        contentWidgets.add(keywordWidget);
-      }
-    });
-
-    return contentWidgets;
   }
 
 }

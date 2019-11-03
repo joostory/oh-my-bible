@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/components/app_bar.dart';
+import 'package:holybible/components/list/bible_list_widget.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/version.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
-import 'package:holybible/screens/bible/chapterlist_screen.dart';
 import 'package:redux/redux.dart';
 
 class BibleListScreen extends StatelessWidget {
@@ -85,7 +85,7 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _BibleListTileWidget(
+              (context, index) => BibleListTileWidget(
                 bible: bibles[index],
                 fontSize: widget.fontSize
               ),
@@ -99,41 +99,3 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
   }
 }
 
-
-class _BibleListTileWidget extends StatelessWidget {
-  final Bible bible;
-  final double fontSize;
-
-  const _BibleListTileWidget({
-    this.bible,
-    this.fontSize
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        bible.name,
-        style: TextStyle(
-          fontSize: fontSize
-        ),
-      ),
-      trailing: Text(
-        '${bible.chapterCount} / ${bible.getTypeLabel()}',
-        style: TextStyle(
-          fontSize: fontSize - 4,
-          fontWeight: FontWeight.bold
-        )
-      ),
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          ChapterListScreen.routeName,
-          arguments: ChapterListScreenArguments(
-            bible.bcode
-          )
-        );
-      },
-    );
-  }
-}

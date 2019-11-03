@@ -52,8 +52,15 @@ class _HymnSearchListState extends State<_HymnSearchListWidget> {
   @override
   void initState() {
     super.initState();
-    var result;
+    if (widget.query.length == 0) {
+      setState(() {
+        searched = true;
+        hymns = [];
+      });
+      return;
+    }
 
+    var result;
     if (int.tryParse(widget.query) != null) {
       result = HymnRepository().findByNumber(widget.query);
     } else {

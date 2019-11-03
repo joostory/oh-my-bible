@@ -52,7 +52,7 @@ class SearchHymnButton extends StatelessWidget {
           context: context,
           delegate: AppSearchDelegate(
             hint: "찬송가",
-            searchResultWidgetCreator: (String query) => HymnSearchList(query)
+            searchResultWidgetCreator: (String query) => HymnSearchList(query),
           )
         );
       },
@@ -71,7 +71,7 @@ class SearchButton extends StatelessWidget {
           context: context,
           delegate: AppSearchDelegate(
             hint: "성경",
-            searchResultWidgetCreator: (String query) => BibleSearchList(query)
+            searchResultWidgetCreator: (String query) => BibleSearchList(query),
           )
         );
       },

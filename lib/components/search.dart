@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 typedef SearchWidgetCreator = Widget Function(String query);
+typedef SuggestWidgetCreator = Widget Function(String query);
 
 class AppSearchDelegate extends SearchDelegate {
 

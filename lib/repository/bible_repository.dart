@@ -31,6 +31,20 @@ class BibleRepository {
     return bibles;
   }
 
+  Future<List<Bible>> searchBibles(String vcode, String query) async {
+    var db = await BibleDatabase.getDb();
+    var results = await db.query(
+      'bibles',
+      columns: ['vcode', 'bcode', 'type', 'name', 'chapter_count'],
+      where: 'vcode=:vcode and name like :query',
+      whereArgs: [vcode, '%$query%'],
+      orderBy: 'bcode asc'
+    );
+    List<Bible> bibles = List<Bible>();
+    results.forEach((item) => bibles.add(Bible.fromMap(item)));
+    return bibles;
+  }
+
   Future<Bible> loadBible(vcode, bcode) async {
     var db = await BibleDatabase.getDb();
     var results = await db.query(
