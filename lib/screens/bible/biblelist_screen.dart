@@ -85,23 +85,9 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
           SliverFixedExtentList(
             itemExtent: 50.0,
             delegate: SliverChildBuilderDelegate(
-              (context, index) => ListTile(
-                title: Text(
-                  bibles[index].name,
-                  style: TextStyle(
-                    fontSize: widget.fontSize
-                  ),
-                ),
-                onTap: () {
-                  Bible bible = bibles[index];
-                  Navigator.pushNamed(
-                    context,
-                    ChapterListScreen.routeName,
-                    arguments: ChapterListScreenArguments(
-                      bible.bcode
-                    )
-                  );
-                },
+              (context, index) => _BibleListTileWidget(
+                bible: bibles[index],
+                fontSize: widget.fontSize
               ),
               childCount: bibles.length
             )
@@ -111,5 +97,43 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
       // bottomNavigationBar: AppNavigationBar(0),
     );
   }
+}
 
+
+class _BibleListTileWidget extends StatelessWidget {
+  final Bible bible;
+  final double fontSize;
+
+  const _BibleListTileWidget({
+    this.bible,
+    this.fontSize
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        bible.name,
+        style: TextStyle(
+          fontSize: fontSize
+        ),
+      ),
+      trailing: Text(
+        '${bible.chapterCount} / ${bible.getTypeLabel()}',
+        style: TextStyle(
+          fontSize: fontSize - 4,
+          fontWeight: FontWeight.bold
+        )
+      ),
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          ChapterListScreen.routeName,
+          arguments: ChapterListScreenArguments(
+            bible.bcode
+          )
+        );
+      },
+    );
+  }
 }

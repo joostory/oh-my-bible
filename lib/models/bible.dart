@@ -14,6 +14,10 @@ class Bible {
     this.chapterCount
   });
 
+  String getTypeLabel() {
+    return type == 'old'? '구약' : '신약';
+  }
+
   static Bible fromMap(Map<String, dynamic> item) {
     return Bible(
       vcode: item['vcode'],
