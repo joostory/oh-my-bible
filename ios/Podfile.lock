@@ -137,7 +137,7 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: f6ab1962e9dc05ab1fb938b795e5b310209edeec
   GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
+  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
   wakelock: da5012e206ec8978df58d8642e4cdd4fe506185f
 
