@@ -60,6 +60,21 @@ class SearchHymnButton extends StatelessWidget {
   }
 }
 
+class BookmarkButton extends StatelessWidget {
+  final bool checked;
+  BookmarkButton(this.checked);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(checked? Icons.bookmark : Icons.bookmark_border),
+      onPressed: () {
+        //
+        print("bookmark pressed");
+      },
+    );
+  }
+}
 
 class SearchButton extends StatelessWidget {
   @override

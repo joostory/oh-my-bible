@@ -192,7 +192,7 @@ class _VerseListState extends State<_VerseList> {
         return ListView.builder(
           padding: EdgeInsets.only(
             top: 20.0,
-            bottom: 20.0
+            bottom: 20.0,
           ),
           itemBuilder: (context, index) => _VerseListitem(verses[index], vm.fontSize),
           itemCount: verses.length,
@@ -219,39 +219,90 @@ class _VerseListitem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        _VerseContent(verse, fontSize),
+        _VerseButton(verse, fontSize)
+      ],
+    );
+  }
+}
+
+class _VerseContent extends StatelessWidget {
+  final Verse verse;
+  final double fontSize;
+
+  _VerseContent(this.verse, this.fontSize);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: Container(
-              alignment: Alignment.topRight,
-              padding: EdgeInsets.only(
-                top: fontSize / 4,
-                right: 8.0
-              ),
-              child: Text(
-                '${verse.vnum}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontSize - fontSize / 4
+            child: GestureDetector(
+              child: Container(
+                alignment: Alignment.topRight,
+                padding: EdgeInsets.only(
+                  top: fontSize / 4,
+                  right: 8.0
+                ),
+                child: Text(
+                  '${verse.vnum}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontSize - fontSize / 4
+                  ),
                 ),
               ),
-            ),
+              onTap: () {
+                // TODO
+              },
+            )
           ),
           Expanded(
             flex: 9,
-            child: SelectableText(
-              verse.content,
-              style: TextStyle(
-                fontSize: fontSize
+            child: Container(
+              child: SelectableText(
+                verse.content,
+                style: TextStyle(
+                  fontSize: fontSize
+                ),
               ),
             )
           )
         ],
       ),
       padding: EdgeInsets.fromLTRB(15.0, 3.0, 20.0, 3.0)
+    );
+  }
+
+}
+
+class _VerseButton extends StatelessWidget {
+  final Verse verse;
+  final double fontSize;
+
+  _VerseButton(this.verse, this.fontSize);
+
+  @override
+  Widget build(BuildContext context) {
+    if (verse.vnum % 2 == 0) {
+      return Container();
+    }
+
+    return Positioned(
+      top: fontSize / 4,
+      left: 0.0,
+      child: RotatedBox(
+        child: Icon(Icons.bookmark,
+          color: Theme.of(context).accentColor,
+          size: fontSize,
+        ),
+        quarterTurns: 3,
+      ),
     );
   }
 }
