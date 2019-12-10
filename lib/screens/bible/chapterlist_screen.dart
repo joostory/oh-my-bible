@@ -82,12 +82,14 @@ class _ChapterListState extends State<_ChapterList> {
     }
   }
 
-  _loadBible() async {
-    var repository = new BibleRepository();
-    var loadBible = await repository.loadBible(widget.vcode, widget.bcode);
-    setState(() {
-      bible = loadBible;
-    });
+  _loadBible() {
+    BibleRepository()
+      .find(widget.vcode, widget.bcode)
+      .then((loadBible) {
+        setState(() {
+          bible = loadBible;
+        });
+      });
   }
 
 

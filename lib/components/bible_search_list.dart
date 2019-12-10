@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/components/list/bible_list_widget.dart';
-import 'package:holybible/components/list/common_list_widget.dart';
+import 'package:holybible/components/loading.dart';
 import 'package:holybible/components/text.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
+import 'package:holybible/repository/verse_repository.dart';
 import 'package:holybible/screens/bible/verselist_screen.dart';
 import 'package:redux/redux.dart';
 
@@ -71,15 +72,16 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
   }
 
   void _searchResults() {
-    var repository = BibleRepository();
-    repository.searchBibles(widget.vcode, widget.query)
+    BibleRepository()
+      .searchBibles(widget.vcode, widget.query)
       .then((results) {
         setState(() {
           searched = true;
           bibles = results;
         });
       });
-    repository.searchVerses(widget.vcode, widget.query)
+    VerseRepository()
+      .findByKeyword(widget.vcode, widget.query)
       .then((results) {
         setState(() {
           searched = true;
@@ -95,7 +97,7 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
     }
 
     if (bibles.length == 0 && verses.length == 0) {
-      return ListMessage(message: "검색 결과가 없습니다.");
+      return MessageLoading(message: "검색 결과가 없습니다.");
     }
 
     return CustomScrollView(

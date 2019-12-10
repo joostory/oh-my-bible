@@ -21,11 +21,6 @@ class Hymn {
     );
   }
 
-  static List<Hymn> fromMapList(List<Map<String, dynamic>> items) {
-    List<Hymn> list = new List<Hymn>();
-    items.forEach((item) {
-      list.add(Hymn.fromMap(item));
-    });
-    return list;
-  }
+  static List<Hymn> fromMapList(List<Map<String, dynamic>> items)
+    => items.map((item) => Hymn.fromMap(item)).toList();
 }

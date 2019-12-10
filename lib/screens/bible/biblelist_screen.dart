@@ -72,7 +72,7 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
 
   loadBibles() {
     BibleRepository()
-      .loadBibles(widget.version.vcode)
+      .findByVersion(widget.version.vcode)
       .then((loadedBibles) => setState(() => bibles = loadedBibles));
   }
 

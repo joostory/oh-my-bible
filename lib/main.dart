@@ -3,6 +3,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:holybible/actions/actions.dart';
+import 'package:holybible/components/loading.dart';
 import 'package:holybible/middleware/middlewares.dart';
 import 'package:holybible/reducers/app_reducer.dart';
 import 'package:holybible/reducers/app_state.dart';
@@ -91,11 +92,7 @@ class _ThemeAppState extends State<_ThemeApp> {
             ),
           );
         } else {
-          home = Scaffold(
-            body: Center(
-              child: Text("Loading..."),
-            )
-          );
+          home = Loading();
         }
 
         return MaterialApp(

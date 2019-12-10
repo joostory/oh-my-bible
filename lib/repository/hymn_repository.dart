@@ -3,7 +3,7 @@ import 'package:holybible/models/hymn.dart';
 import 'package:holybible/repository/bible_database.dart';
 
 class HymnRepository {
-  Future<List<Hymn>> loadHymns() async {
+  Future<List<Hymn>> findAll() async {
     var db = await BibleDatabase.getDb();
     var results = await db.query(
       'hymns',

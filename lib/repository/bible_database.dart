@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -8,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 class BibleDatabase {
   static Future<Database> getDb() async {
     String documentDir = await getDatabasesPath();
-    String dbPath = join(documentDir, "holybible-1.db");
+    String dbPath = join(documentDir, "holybible.db");
 
     if (!await databaseExists(dbPath)) {
       await _prepareDatabaseFile(dbPath);
@@ -17,8 +18,14 @@ class BibleDatabase {
 
     return await openDatabase(
       dbPath,
+      version: 1,
       singleInstance: true,
+      onUpgrade: _handleUpgrade
     );
+  }
+
+  static FutureOr<void> _handleUpgrade(Database db, int oldVersion, int newVersion) {
+    // 나중에 필요할 때 사용
   }
 
   static _prepareDatabaseFile(dbPath) async {
@@ -30,7 +37,8 @@ class BibleDatabase {
 
   static _removeOldDatabaseFile(String documentDir) async {
     var oldDatabases = [
-      "asset_holybible.db"
+      "asset_holybible.db",
+      "holybible-1.db"
     ];
 
     oldDatabases.forEach((filename) async {

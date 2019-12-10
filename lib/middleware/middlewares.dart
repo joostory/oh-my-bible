@@ -1,6 +1,6 @@
 import 'package:holybible/actions/actions.dart';
-import 'package:holybible/repository/bible_repository.dart';
 import 'package:holybible/repository/hymn_repository.dart';
+import 'package:holybible/repository/version_repository.dart';
 import 'package:redux/redux.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,11 +22,11 @@ void _log(Store<AppState> store, action, NextDispatcher next) {
 
 Middleware<AppState> _createLoadAppInfo() {
   return (Store<AppState> store, action, NextDispatcher next) async {
-    BibleRepository().loadVersions().then((versions) {
+    VersionRepository().findAll().then((versions) {
       store.dispatch(ReceiveVersionsAction(versions));
     });
 
-    HymnRepository().loadHymns().then((hymns) {
+    HymnRepository().findAll().then((hymns) {
       store.dispatch(ReceiveHymnsAction(hymns));
     });
 
