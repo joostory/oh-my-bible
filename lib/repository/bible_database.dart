@@ -18,14 +18,18 @@ class BibleDatabase {
 
     return await openDatabase(
       dbPath,
-      version: 1,
+      version: 2,
       singleInstance: true,
       onUpgrade: _handleUpgrade
     );
   }
 
   static FutureOr<void> _handleUpgrade(Database db, int oldVersion, int newVersion) {
-    // 나중에 필요할 때 사용
+    var batch = db.batch();
+    if (oldVersion < 2 && newVersion >= 2) {
+      batch.execute('update verses set bookmarked=false');
+      batch.execute('update hymns set bookmarked=false');
+    }
   }
 
   static _prepareDatabaseFile(dbPath) async {
