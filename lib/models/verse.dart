@@ -15,7 +15,7 @@ class Verse {
     cnum: item['cnum'],
     vnum: item['vnum'],
     content: item['content'],
-    bookmarked: item['bookmarked'] != 0
+    bookmarked: item['bookmarked'] == 1
   );
 
   static Verse from(Verse verse) => Verse(
@@ -56,7 +56,7 @@ class SearchVerse extends Verse {
       cnum: item['cnum'],
       vnum: item['vnum'],
       content: item['content'],
-      bookmarked: item['bookmarked'] != 0,
+      bookmarked: item['bookmarked'] == 1,
       bibleName: item['bibleName']
     );
   }
