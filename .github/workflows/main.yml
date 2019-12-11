@@ -30,7 +30,7 @@ jobs:
       - name: Build App
         run: |
           flutter pub get
-          flutter build apk
+          flutter build appbundle
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
