@@ -30,11 +30,11 @@ jobs:
       - name: Build App
         run: |
           flutter pub get
-          flutter build appbundle
+          flutter build apk --split-per-abi
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            build/app/outputs/bundle/release/app.aab
+            build/app/outputs/apk/release/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
