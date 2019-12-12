@@ -27,6 +27,7 @@ class BibleDatabase {
   static FutureOr<void> _handleUpgrade(Database db, int oldVersion, int newVersion) {
     var batch = db.batch();
     if (oldVersion < 2 && newVersion >= 2) {
+      print('[DB_UPGRADE] ${new DateTime.now()}: upgrade v2');
       batch.execute('update verses set bookmarked=false');
       batch.execute('update hymns set bookmarked=false');
     }

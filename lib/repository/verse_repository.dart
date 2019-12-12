@@ -36,7 +36,7 @@ class VerseRepository {
   Future<List<SearchVerse>> findByBookmark(String vcode) async {
     var db = await BibleDatabase.getDb();
     var results = await db.rawQuery(
-      'select verses.*, bibles.name bibleName from verses inner join bibles on verses.bcode = bibles.bcode and bibles.vcode=? where verses.vcode=? and bookmarked=true order by bcode, cnum asc',
+      'select verses.*, bibles.name bibleName from verses inner join bibles on verses.bcode = bibles.bcode and bibles.vcode=? where verses.vcode=? and bookmarked=1 order by bcode, cnum asc',
       [vcode, vcode]
     );
     return results.map((item) => SearchVerse.fromMap(item)).toList();
