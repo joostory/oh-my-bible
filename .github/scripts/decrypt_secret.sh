@@ -8,3 +8,6 @@ openssl aes-256-cbc -K $BUILD_KEY -iv $BUILD_IV -a \
 
 openssl aes-256-cbc -K $BUILD_KEY -iv $BUILD_IV -a \
   -in android/app/holybible.keystore.enc -out android/app/holybible.keystore -d
+
+openssl aes-256-cbc -K $BUILD_KEY -iv $BUILD_IV -a \
+  -in ios/Runner/GoogleService-Info.plist.enc -out ios/Runner/GoogleService-Info.plist -d
