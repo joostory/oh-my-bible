@@ -1,4 +1,3 @@
-
 import 'package:holybible/models/hymn.dart';
 import 'package:holybible/models/version.dart';
 
@@ -8,6 +7,7 @@ class AppState {
   final String selectedVersionCode;
   final List<Hymn> hymns;
   final double fontSize;
+  final String fontFamily;
   final bool useDarkMode;
 
   AppState({
@@ -16,6 +16,7 @@ class AppState {
     this.selectedVersionCode = '',
     this.hymns = const [],
     this.fontSize = 16.0,
+    this.fontFamily = 'notosans',
     this.useDarkMode = false
   });
 

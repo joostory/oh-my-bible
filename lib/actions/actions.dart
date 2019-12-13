@@ -29,6 +29,11 @@ class ChangeFontSizeAction {
   ChangeFontSizeAction(this.fontSize);
 }
 
+class ChangeFontFamilyAction {
+  final String fontFamily;
+  ChangeFontFamilyAction(this.fontFamily);
+}
+
 class ChangeDarkModeAction {
   final bool useDarkMode;
   ChangeDarkModeAction(this.useDarkMode);

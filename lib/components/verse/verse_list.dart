@@ -163,10 +163,11 @@ class _VerseListState extends State<_VerseList> {
             top: 20.0,
             bottom: 20.0,
           ),
-          itemBuilder: (context, index) => VerseListitem(
+          itemBuilder: (context, index) => VerseListItem(
             bible: widget.bible,
             verse: verses[index],
             fontSize: vm.fontSize,
+            fontFamily: vm.fontFamily,
             onChange: _handleChangeVerseBookmark
           ),
           itemCount: verses.length,
@@ -179,10 +180,14 @@ class _VerseListState extends State<_VerseList> {
 
 class _VerseListViewModel {
   final double fontSize;
-  _VerseListViewModel(this.fontSize);
+  final String fontFamily;
+  _VerseListViewModel({this.fontSize, this.fontFamily});
 
   static _VerseListViewModel fromStore(Store<AppState> store) {
-    return _VerseListViewModel(store.state.fontSize);
+    return _VerseListViewModel(
+      fontSize: store.state.fontSize,
+      fontFamily: store.state.fontFamily
+    );
   }
 }
 

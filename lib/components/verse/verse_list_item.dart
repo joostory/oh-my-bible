@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:holybible/components/verse/verse_dialog.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
+import 'package:holybible/utils/font_utils.dart';
 
 
 typedef VerseChangeHandler = void Function(Verse verse);
 
-class VerseListitem extends StatelessWidget {
+class VerseListItem extends StatelessWidget {
   final Bible bible;
   final Verse verse;
   final double fontSize;
+  final String fontFamily;
   final VerseChangeHandler onChange;
 
-  VerseListitem({this.bible, this.verse, this.fontSize, this.onChange});
+  VerseListItem({this.bible, this.verse, this.fontSize, this.fontFamily, this.onChange});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class VerseListitem extends StatelessWidget {
       children: <Widget>[
         _VerseButtons(verse, fontSize),
         GestureDetector(
-          child: _VerseContent(verse, fontSize),
+          child: _VerseContent(verse, fontSize, fontFamily),
           onTap: () {
             openVerseDialog(context, bible, verse, fontSize, onChange);
           },
@@ -75,8 +77,9 @@ class _VerseBookmarkButton extends StatelessWidget {
 class _VerseContent extends StatelessWidget {
   final Verse verse;
   final double fontSize;
+  final String fontFamily;
 
-  _VerseContent(this.verse, this.fontSize);
+  _VerseContent(this.verse, this.fontSize, this.fontFamily);
 
   @override
   Widget build(BuildContext context) {
@@ -86,36 +89,43 @@ class _VerseContent extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: Container(
-              alignment: Alignment.topRight,
-              padding: EdgeInsets.only(
-                top: fontSize / 4,
-                right: 8.0
-              ),
-              child: Text(
-                '${verse.vnum}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontSize - fontSize / 4
-                ),
-              ),
-            ),
+            child: _buildVerseNumber(),
           ),
           Expanded(
             flex: 9,
-            child: Container(
-              child: Text(
-                verse.content,
-                style: TextStyle(
-                  fontSize: fontSize
-                ),
-              ),
-            )
+            child: _buildVerseText()
           )
         ],
       ),
       padding: EdgeInsets.fromLTRB(15.0, 3.0, 20.0, 3.0)
     );
   }
+
+  Widget _buildVerseNumber() => Container(
+    alignment: Alignment.topRight,
+    padding: EdgeInsets.only(
+      top: fontSize / 4,
+      right: 8.0
+    ),
+    child: Text(
+      '${verse.vnum}',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: fontSize - fontSize / 4,
+        fontFamily: toGoogleFontFamily(fontFamily)
+      ),
+    ),
+  );
+
+  Widget _buildVerseText() => Container(
+    child: Text(
+      verse.content,
+      style: TextStyle(
+        fontSize: fontSize,
+        height: 1.5,
+        fontFamily: toGoogleFontFamily(fontFamily)
+      ),
+    ),
+  );
 }
 

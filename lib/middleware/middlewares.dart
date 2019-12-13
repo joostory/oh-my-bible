@@ -10,6 +10,7 @@ List<Middleware<AppState>> createMiddleware() {
     TypedMiddleware<AppState, dynamic>(_log),
     TypedMiddleware<AppState, LoadAppInfoAction>(_createLoadAppInfo()),
     TypedMiddleware<AppState, ChangeFontSizeAction>(_saveFontSize()),
+    TypedMiddleware<AppState, ChangeFontFamilyAction>(_saveFontFamily()),
     TypedMiddleware<AppState, ChangeDarkModeAction>(_saveUseDarkMode()),
   ];
 }
@@ -34,6 +35,9 @@ Middleware<AppState> _createLoadAppInfo() {
       if (prefs.containsKey('fontSize')) {
         store.dispatch(ChangeFontSizeAction(prefs.getDouble('fontSize')));
       }
+      if (prefs.containsKey('fontFamily')) {
+        store.dispatch(ChangeFontFamilyAction(prefs.getString('fontFamily')));
+      }
       if (prefs.containsKey('useDarkMode')) {
         store.dispatch(ChangeDarkModeAction(prefs.getBool('useDarkMode')));
       }
@@ -46,6 +50,14 @@ Middleware<AppState> _saveFontSize() {
   return (Store<AppState> store, action, NextDispatcher next) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setDouble('fontSize', action.fontSize);
+    next(action);
+  };
+}
+
+Middleware<AppState> _saveFontFamily() {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('fontFamily', action.fontFamily);
     next(action);
   };
 }
