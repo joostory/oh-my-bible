@@ -1,4 +1,6 @@
-# 성경
+# 성경 ![Build Result](build_result)
+
+[build_result]: https://github.com/joostory/oh-my-bible/workflows/Test/badge.svg
 
 성경앱 flutter 버전
 
@@ -11,6 +13,6 @@
 // development 앱 시작
 $ flutter run
 
-// 안드로이드 앱 빌드
-$ flutter run apk
+// 안드로이드 production 앱 빌드
+$ flutter build apk --split-per-abi
 ```
