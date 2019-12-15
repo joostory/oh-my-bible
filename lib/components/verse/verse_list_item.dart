@@ -14,7 +14,13 @@ class VerseListItem extends StatelessWidget {
   final String fontFamily;
   final VerseChangeHandler onChange;
 
-  VerseListItem({this.bible, this.verse, this.fontSize, this.fontFamily, this.onChange});
+  VerseListItem({
+    this.bible,
+    this.verse,
+    this.fontSize,
+    this.fontFamily,
+    this.onChange
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,7 @@ class VerseListItem extends StatelessWidget {
         GestureDetector(
           child: _VerseContent(verse, fontSize, fontFamily),
           onTap: () {
-            openVerseDialog(context, bible, verse, fontSize, onChange);
+            openVerseDialog(context, bible, verse, fontSize, fontFamily, onChange);
           },
         ),
         

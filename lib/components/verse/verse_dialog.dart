@@ -3,8 +3,9 @@ import 'package:holybible/actions/behaviors.dart';
 import 'package:holybible/components/verse/verse_list_item.dart';
 import 'package:holybible/models/bible.dart';
 import 'package:holybible/models/verse.dart';
+import 'package:holybible/utils/font_utils.dart';
 
-void openVerseDialog(BuildContext context, Bible bible, Verse verse, double fontSize, VerseChangeHandler onChange) {
+void openVerseDialog(BuildContext context, Bible bible, Verse verse, double fontSize, String fontFamily, VerseChangeHandler onChange) {
   showDialog(
     context: context,
     builder: (context) {
@@ -15,6 +16,7 @@ void openVerseDialog(BuildContext context, Bible bible, Verse verse, double font
           _VerseDialogDetail(
             verse: verse,
             fontSize: fontSize,
+            fontFamily: fontFamily,
             onChange: onChange
           )
         ],
@@ -26,9 +28,15 @@ void openVerseDialog(BuildContext context, Bible bible, Verse verse, double font
 class _VerseDialogDetail extends StatelessWidget {
   final Verse verse;
   final double fontSize;
+  final String fontFamily;
   final VerseChangeHandler onChange;
 
-  const _VerseDialogDetail({this.verse, this.fontSize, this.onChange});
+  const _VerseDialogDetail({
+    this.verse,
+    this.fontSize,
+    this.fontFamily,
+    this.onChange
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +47,7 @@ class _VerseDialogDetail extends StatelessWidget {
           _VerseDialogDetailContent(
             verse: verse,
             fontSize: fontSize,
+            fontFamily: fontFamily
           ),
           Container(
             margin: EdgeInsets.only(bottom: 20.0),
@@ -56,15 +65,22 @@ class _VerseDialogDetail extends StatelessWidget {
 class _VerseDialogDetailContent extends StatelessWidget {
   final Verse verse;
   final double fontSize;
+  final String fontFamily;
 
-  const _VerseDialogDetailContent({this.verse, this.fontSize});
+  _VerseDialogDetailContent({
+    this.verse,
+    this.fontSize,
+    this.fontFamily
+  });
 
   @override
   Widget build(BuildContext context) {
     return SelectableText(
       verse.content,
       style: TextStyle(
-        fontSize: fontSize
+        fontSize: fontSize,
+        height: 1.5,
+        fontFamily: toGoogleFontFamily(fontFamily)
       ),
     );
   }
