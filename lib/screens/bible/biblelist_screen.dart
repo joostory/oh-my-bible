@@ -18,7 +18,8 @@ class BibleListScreen extends StatelessWidget {
       builder: (BuildContext context, _ViewModel vm) {
         return _BibleListWidget(
           vm.selectedVersion,
-          vm.fontSize
+          vm.fontSize,
+          vm.fontFamily
         );
       },
     );
@@ -29,14 +30,16 @@ class BibleListScreen extends StatelessWidget {
 class _ViewModel {
   final Version selectedVersion;
   final double fontSize;
-  _ViewModel({this.selectedVersion, this.fontSize});
+  final String fontFamily;
+  _ViewModel({this.selectedVersion, this.fontSize, this.fontFamily});
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       selectedVersion: store.state.versions.firstWhere(
         (version) => version.vcode == store.state.selectedVersionCode
       ),
-      fontSize: store.state.fontSize
+      fontSize: store.state.fontSize,
+      fontFamily: store.state.fontFamily
     );
   }
 }
@@ -44,8 +47,9 @@ class _ViewModel {
 class _BibleListWidget extends StatefulWidget {
   final Version version;
   final double fontSize;
+  final String fontFamily;
 
-  _BibleListWidget(this.version, this.fontSize);
+  _BibleListWidget(this.version, this.fontSize, this.fontFamily);
 
   @override
   State<StatefulWidget> createState() => _BibleListWidgetState();
@@ -87,7 +91,8 @@ class _BibleListWidgetState extends State<_BibleListWidget> {
             delegate: SliverChildBuilderDelegate(
               (context, index) => BibleListTileWidget(
                 bible: bibles[index],
-                fontSize: widget.fontSize
+                fontSize: widget.fontSize,
+                fontFamily: widget.fontFamily
               ),
               childCount: bibles.length
             )

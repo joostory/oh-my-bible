@@ -9,6 +9,7 @@ import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
 import 'package:holybible/repository/verse_repository.dart';
 import 'package:holybible/screens/bible/verselist_screen.dart';
+import 'package:holybible/utils/font_utils.dart';
 import 'package:redux/redux.dart';
 
 class BibleSearchList extends StatelessWidget {
@@ -21,7 +22,7 @@ class BibleSearchList extends StatelessWidget {
     return new StoreConnector<AppState, _BibleSearchViewModel>(
       converter: _BibleSearchViewModel.fromStore,
       builder: (BuildContext context, _BibleSearchViewModel vm) {
-        return _BibleSearchListWidget(query, vm.vcode, vm.fontSize);
+        return _BibleSearchListWidget(query, vm.vcode, vm.fontSize, vm.fontFamily);
       },
     );
   }
@@ -30,13 +31,15 @@ class BibleSearchList extends StatelessWidget {
 class _BibleSearchViewModel {
   final String vcode;
   final double fontSize;
+  final String fontFamily;
 
-  _BibleSearchViewModel(this.vcode, this.fontSize);
+  _BibleSearchViewModel(this.vcode, this.fontSize, this.fontFamily);
 
   static _BibleSearchViewModel fromStore(Store<AppState> store) {
     return _BibleSearchViewModel(
       store.state.selectedVersionCode,
-      store.state.fontSize
+      store.state.fontSize,
+      store.state.fontFamily
     );
   }
 }
@@ -45,7 +48,9 @@ class _BibleSearchListWidget extends StatefulWidget {
   final String query;
   final String vcode;
   final double fontSize;
-  _BibleSearchListWidget(this.query, this.vcode, this.fontSize);
+  final String fontFamily;
+
+  _BibleSearchListWidget(this.query, this.vcode, this.fontSize, this.fontFamily);
 
   @override
   State<StatefulWidget> createState() => _BibleSearchListWidgetState();
@@ -106,13 +111,15 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
           delegate: SliverChildListDelegate(
             bibles.map((item) => BibleListTileWidget(
               bible: item,
-              fontSize: widget.fontSize
+              fontSize: widget.fontSize,
+              fontFamily: widget.fontFamily,
             )).toList()
           ),
         ),
         _VerseResultWidget(
           verses: verses,
           fontSize: widget.fontSize,
+          fontFamily: widget.fontFamily,
           query: widget.query
         )
       ],
@@ -125,11 +132,13 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
 class _VerseResultWidget extends StatelessWidget {
   final List<SearchVerse> verses;
   final double fontSize;
+  final String fontFamily;
   final String query;
 
   _VerseResultWidget({
     this.verses,
     this.fontSize,
+    this.fontFamily,
     this.query
   });
 
@@ -145,13 +154,15 @@ class _VerseResultWidget extends StatelessWidget {
                 '${verse.bibleName} ${verse.cnum} : ${verse.vnum}',
                 style: TextStyle(
                   fontSize: fontSize - 4.0,
+                  fontFamily: toGoogleFontFamily(fontFamily),
                   fontWeight: FontWeight.bold
                 )
               ),
               HighlightText(
                 content: verse.content,
                 keyword: query,
-                fontSize: fontSize
+                fontSize: fontSize,
+                fontFamily: toGoogleFontFamily(fontFamily),
               )
             ],
           ),

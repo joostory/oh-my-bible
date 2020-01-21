@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:holybible/utils/font_utils.dart';
 
 class HighlightText extends StatelessWidget {
   final String content;
   final String keyword;
   final double fontSize;
+  final String fontFamily;
 
   HighlightText({
     this.content,
     this.keyword,
-    this.fontSize
+    this.fontSize,
+    this.fontFamily
   });
 
   @override
   Widget build(BuildContext context) {
     return Text.rich(TextSpan(
-      style: TextStyle(fontSize: fontSize),
+      style: TextStyle(
+        fontSize: fontSize,
+        fontFamily: fontFamily
+      ),
       children: _makeHighlightWidgets()
     ));
   }

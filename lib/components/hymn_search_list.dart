@@ -4,6 +4,7 @@ import 'package:holybible/models/hymn.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/hymn_repository.dart';
 import 'package:holybible/screens/hymn/hymnscore_screen.dart';
+import 'package:holybible/utils/font_utils.dart';
 import 'package:redux/redux.dart';
 
 
@@ -17,7 +18,7 @@ class HymnSearchList extends StatelessWidget {
     return new StoreConnector<AppState, _HymnSearchViewModel>(
       converter: _HymnSearchViewModel.fromStore,
       builder: (BuildContext context, _HymnSearchViewModel vm) {
-        return _HymnSearchListWidget(query, vm.fontSize);
+        return _HymnSearchListWidget(query, vm.fontSize, vm.fontFamily);
       },
     );
   }
@@ -25,12 +26,14 @@ class HymnSearchList extends StatelessWidget {
 
 class _HymnSearchViewModel {
   final double fontSize;
+  final String fontFamily;
 
-  _HymnSearchViewModel(this.fontSize);
+  _HymnSearchViewModel(this.fontSize, this.fontFamily);
 
   static _HymnSearchViewModel fromStore(Store<AppState> store) {
     return _HymnSearchViewModel(
-      store.state.fontSize
+      store.state.fontSize,
+      store.state.fontFamily
     );
   }
 }
@@ -38,8 +41,9 @@ class _HymnSearchViewModel {
 class _HymnSearchListWidget extends StatefulWidget {
   final String query;
   final double fontSize;
+  final String fontFamily;
 
-  _HymnSearchListWidget(this.query, this.fontSize);
+  _HymnSearchListWidget(this.query, this.fontSize, this.fontFamily);
 
   @override
   State<StatefulWidget> createState() => _HymnSearchListState();
@@ -100,9 +104,22 @@ class _HymnSearchListState extends State<_HymnSearchListWidget> {
           title: RichText(
             text: TextSpan(
               children: [
-                TextSpan(text: '${hymn.number}.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: widget.fontSize)),
+                TextSpan(
+                  text: '${hymn.number}.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: widget.fontSize,
+                    fontFamily: toGoogleFontFamily(widget.fontFamily)
+                  )
+                ),
                 TextSpan(text: ' '),
-                TextSpan(text: '${hymn.title}', style: TextStyle(fontSize: widget.fontSize))
+                TextSpan(
+                  text: '${hymn.title}',
+                  style: TextStyle(
+                    fontSize: widget.fontSize,
+                    fontFamily: toGoogleFontFamily(widget.fontFamily)
+                  )
+                )
               ],
               style: Theme.of(context).textTheme.title
             ),

@@ -6,6 +6,7 @@ import 'package:holybible/models/bible.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/bible_repository.dart';
 import 'package:holybible/screens/bible/verselist_screen.dart';
+import 'package:holybible/utils/font_utils.dart';
 import 'package:redux/redux.dart';
 
 class ChapterListScreen extends StatelessWidget {
@@ -20,7 +21,8 @@ class ChapterListScreen extends StatelessWidget {
         return _ChapterList(
           vcode: vm.selectedVersionCode,
           bcode: args.bcode,
-          fontSize: vm.fontSize
+          fontSize: vm.fontSize,
+          fontFamily: vm.fontFamily
         );
       },
     );
@@ -35,15 +37,19 @@ class ChapterListScreenArguments {
 class _ViewModel {
   final String selectedVersionCode;
   final double fontSize;
+  final String fontFamily;
+
   _ViewModel({
     this.selectedVersionCode,
-    this.fontSize
+    this.fontSize,
+    this.fontFamily
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       selectedVersionCode: store.state.selectedVersionCode,
-      fontSize: store.state.fontSize
+      fontSize: store.state.fontSize,
+      fontFamily: store.state.fontFamily
     );
   }
 }
@@ -52,11 +58,13 @@ class _ChapterList extends StatefulWidget {
   final String vcode;
   final int bcode;
   final double fontSize;
+  final String fontFamily;
 
   _ChapterList({
     this.vcode,
     this.bcode,
-    this.fontSize
+    this.fontSize,
+    this.fontFamily
   });
 
   @override
@@ -114,7 +122,8 @@ class _ChapterListState extends State<_ChapterList> {
                 title: Text(
                   '${bible.name} ${index + 1}',
                   style: TextStyle(
-                    fontSize: widget.fontSize
+                    fontSize: widget.fontSize,
+                    fontFamily: toGoogleFontFamily(widget.fontFamily)
                   )
                 ),
                 onTap: () {
