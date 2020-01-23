@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:holybible/utils/font_utils.dart';
 
 class HighlightText extends StatelessWidget {
   final String content;
