@@ -80,7 +80,7 @@ class _HymnListWidget extends StatelessWidget {
                           )
                         )
                       ],
-                      style: Theme.of(context).textTheme.title
+                      style: Theme.of(context).textTheme.headline6
                     ),
                   ),
                   onTap: () {

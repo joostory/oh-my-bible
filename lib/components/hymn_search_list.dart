@@ -121,7 +121,7 @@ class _HymnSearchListState extends State<_HymnSearchListWidget> {
                   )
                 )
               ],
-              style: Theme.of(context).textTheme.title
+              style: Theme.of(context).textTheme.headline6
             ),
           ),
           onTap: () {

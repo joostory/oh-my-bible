@@ -24,7 +24,7 @@ class AppNavigationBar extends StatelessWidget {
       currentIndex: _currentIndex,
       items: _items.map((item) => BottomNavigationBarItem(
         icon: Icon(item.icon),
-        title: Text(item.title)
+        label: item.title,
       )).toList(),
       onTap: this._onChange,
     );

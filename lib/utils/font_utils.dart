@@ -27,9 +27,9 @@ String toGoogleFontFamily(String fontFamilyValue) {
     case 'yeonsung':
       return GoogleFonts.yeonSung().fontFamily;
     case 'notoserif':
-      return GoogleFonts.notoSerifKR().fontFamily;
+      return GoogleFonts.notoSerif().fontFamily;
     case 'notosans':
     default:
-      return GoogleFonts.notoSansKR().fontFamily;
+      return GoogleFonts.notoSans().fontFamily;
   }
 }
