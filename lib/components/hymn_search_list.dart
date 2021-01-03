@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:holybible/components/loading.dart';
 import 'package:holybible/models/hymn.dart';
 import 'package:holybible/reducers/app_state.dart';
 import 'package:holybible/repository/hymn_repository.dart';
@@ -52,6 +53,7 @@ class _HymnSearchListWidget extends StatefulWidget {
 class _HymnSearchListState extends State<_HymnSearchListWidget> {
   bool searched = false;
   List<Hymn> hymns = [];
+  String keyword = "";
 
   @override
   void initState() {
@@ -60,21 +62,30 @@ class _HymnSearchListState extends State<_HymnSearchListWidget> {
       setState(() {
         searched = true;
         hymns = [];
+        keyword = "";
       });
       return;
+    } else {
+      _search(widget.query);
+    }
+  }
+
+  _search(String query) {
+    setState(() {
+      searched = false;
+    });
+    var result;
+    if (int.tryParse(query) != null) {
+      result = HymnRepository().findByNumber(query);
+    } else {
+      result = HymnRepository().findByKeyword(query);
     }
 
-    var result;
-    if (int.tryParse(widget.query) != null) {
-      result = HymnRepository().findByNumber(widget.query);
-    } else {
-      result = HymnRepository().findByKeyword(widget.query);
-    }
-    
     result.then((results) {
       setState(() {
         searched = true;
         hymns = results;
+        keyword = query;
       });
     });
   }
@@ -82,11 +93,12 @@ class _HymnSearchListState extends State<_HymnSearchListWidget> {
   @override
   Widget build(BuildContext context) {
     if (!searched) {
-      return Container(
-        child: Center(
-          child: CircularProgressIndicator()
-        )
-      );
+      return Loading();
+    }
+
+    if (widget.query != keyword) {
+      _search(widget.query);
+      return Loading();
     }
 
     if (hymns.length == 0) {

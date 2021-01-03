@@ -57,6 +57,7 @@ class _BibleSearchListWidget extends StatefulWidget {
 }
 
 class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
+  String keyword = "";
   bool searched = false;
   List<Bible> bibles = [];
   List<SearchVerse> verses = [];
@@ -66,14 +67,15 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
     super.initState();
     if (widget.query.length == 0) {
       setState(() {
+        keyword = "";
         searched = true;
         bibles = [];
         verses = [];
       });
       return;
+    } else {
+      _searchResults();
     }
-
-    _searchResults();
   }
 
   void _searchResults() {
@@ -81,6 +83,7 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
       .searchBibles(widget.vcode, widget.query)
       .then((results) {
         setState(() {
+          keyword = widget.query;
           searched = true;
           bibles = results;
         });
@@ -89,6 +92,7 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
       .findByKeyword(widget.vcode, widget.query)
       .then((results) {
         setState(() {
+          keyword = widget.query;
           searched = true;
           verses = results;
         });
@@ -98,6 +102,11 @@ class _BibleSearchListWidgetState extends State<_BibleSearchListWidget> {
   @override
   Widget build(BuildContext context) {
     if (!searched) {
+      return Loading();
+    }
+
+    if (widget.query != keyword) {
+      _searchResults();
       return Loading();
     }
 

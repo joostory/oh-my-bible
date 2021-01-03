@@ -12,6 +12,9 @@ class AppSearchDelegate extends SearchDelegate {
     String hint = ""
   }): super(
     searchFieldLabel: hint,
+    searchFieldStyle: TextStyle(
+      color: Color(0xffdddddd)
+    ),
     keyboardType: TextInputType.text
   );
 
@@ -45,6 +48,6 @@ class AppSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) => searchResultWidgetCreator(query);
 
   @override
-  Widget buildSuggestions(BuildContext context) => Column();
+  Widget buildSuggestions(BuildContext context) => searchResultWidgetCreator(query);
 }
 

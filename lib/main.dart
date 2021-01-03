@@ -46,6 +46,11 @@ ThemeData makeThemeData(bool useDarkMode) => ThemeData(
   ),
   primaryColor: Color(0xff333333),
   accentColor: Color(0xfff9dc41),
+  textTheme: TextTheme(
+    headline6: TextStyle(
+      color: Color(0xffffffff)
+    )
+  )
 );
 
 var _appNavigationItems = <AppNavigationItem>[
