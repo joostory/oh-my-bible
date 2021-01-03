@@ -8,8 +8,8 @@ const List<Map<String, dynamic>> FONT_SIZE_LIST = [
 ];
 
 const List<Map<String, String>> FONT_FAMILY_LIST = [
-  {'label': '본고딕', 'value': 'notosans'},
-  {'label': '본명조', 'value': 'notoserif'},
+  {'label': '고딕', 'value': 'notosans'},
+  {'label': '명조', 'value': 'notoserif'},
   {'label': 'SunFlower', 'value': 'sunflower'},
   {'label': 'Stylish', 'value': 'stylish'},
   {'label': 'Poor Story', 'value': 'poorStory'},
@@ -27,7 +27,7 @@ String toGoogleFontFamily(String fontFamilyValue) {
     case 'yeonsung':
       return GoogleFonts.yeonSung().fontFamily;
     case 'notoserif':
-      return GoogleFonts.notoSerif().fontFamily;
+      return "NotoSerifKR";
     case 'notosans':
     default:
       return GoogleFonts.notoSans().fontFamily;

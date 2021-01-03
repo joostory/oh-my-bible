@@ -57,6 +57,7 @@ flutter:
     - assets/holybible.db
     - assets/icon/ico_holybible.png
     - assets/hymns/
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -83,6 +84,22 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: NotoSerifKR
+      fonts:
+        - asset: assets/fonts/NotoSerifKR-Regular.otf
+        - asset: assets/fonts/NotoSerifKR-Black.otf
+          weight: 900
+        - asset: assets/fonts/NotoSerifKR-Bold.otf
+          weight: 700
+        - asset: assets/fonts/NotoSerifKR-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/NotoSerifKR-Medium.otf
+          weight: 500
+        - asset: assets/fonts/NotoSerifKR-Light.otf
+          weight: 300
+        - asset: assets/fonts/NotoSerifKR-ExtraLight.otf
+          weight: 200
 
 flutter_icons:
   android: "ic_launcher"
