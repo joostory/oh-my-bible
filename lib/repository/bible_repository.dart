@@ -12,7 +12,7 @@ class BibleRepository {
       whereArgs: [vcode],
       orderBy: 'bcode asc'
     );
-    List<Bible> bibles = List<Bible>();
+    List<Bible> bibles = <Bible>[];
     results.forEach((item) => bibles.add(Bible.fromMap(item)));
     return bibles;
   }
@@ -26,7 +26,7 @@ class BibleRepository {
       whereArgs: [vcode, '%$query%'],
       orderBy: 'bcode asc'
     );
-    List<Bible> bibles = List<Bible>();
+    List<Bible> bibles = <Bible>[];
     results.forEach((item) => bibles.add(Bible.fromMap(item)));
     return bibles;
   }

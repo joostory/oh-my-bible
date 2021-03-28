@@ -9,7 +9,7 @@ class VersionRepository {
       'versions',
       columns: ['vcode', 'name']
     );
-    List<Version> versions = List<Version>();
+    List<Version> versions = <Version>[];
     results.forEach((item) => versions.add(Version.fromMap(item)));
     return versions;
   }
