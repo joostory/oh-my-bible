@@ -27,6 +27,12 @@ jobs:
         env:
           BUILD_KEY: ${{ secrets.BUILD_KEY }}
           BUILD_IV: ${{ secrets.BUILD_IV }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            android/app/holybible.keystore
+            android/app/google-services.json
       - run: flutter pub get
       - run: flutter test
       - run: flutter analyze
