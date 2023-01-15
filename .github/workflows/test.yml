@@ -33,6 +33,8 @@ jobs:
           path: |
             android/app/holybible.keystore
             android/app/google-services.json
+            android/key.properties
+            ios/Runner/GoogleService-Info.plist
       - run: flutter pub get
       - run: flutter test
       - run: flutter analyze
